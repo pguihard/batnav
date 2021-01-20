@@ -1,0 +1,15 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700);
+
+.client, .clients, .timestamp {
+	width: 150px;
+	border: 2px solid #a32424;
+	border-radius: 5px;
+}
+.message, .tosend {
+    width: 300px;
+	border: 2px solid #73B1B7;
+	border-radius: 5px;
+	
+	color: rgb(27, 58, 27);
+	background-color: bisque;
+}
