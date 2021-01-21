@@ -10,7 +10,7 @@ var socket = io(server);
 //That way it'll still listen to port 5000 when you test locally, but it will also work on Heroku.
 listenPort = process.env.PORT || 5000;
 server.listen(listenPort, "0.0.0.0");
-console.log("Server is running and listening on " + listenPort + " port.");
+console.log("*** Server is running and listening on " + listenPort + " port.");
 
 app.use(express.static(__dirname + "/public"));
 app.get("/", function(req, res, next){
@@ -21,6 +21,7 @@ var allClients = 0;
 var clientId = 0;
 
 socket.on("connection", function(client) {
+    console.log("*** Socket on");
     allClients += 1;
     clientId += 1;
 
@@ -28,27 +29,27 @@ socket.on("connection", function(client) {
     var my_client = { "id": clientId, "obj": client };
     
     if (allClients > 2){
-        console.log("ClientID " + my_client.id + " is rejected.");
+        console.log("*** ClientID " + my_client.id + " is rejected.");
         my_client.obj.send(JSON.stringify({ message: "disconnect"}));
         allClients -= 1;
         return;
     }
-    console.log("ClientID " + my_client.id + " is connected.");
+    console.log("*** ClientID " + my_client.id + " is connected.");
     my_timer = setInterval(function () {
         my_client.obj.send(JSON.stringify({ "timestamp": (new Date()).getTime(), "client": `ID: ${my_client.id}`, "clients": `${allClients} players`}));
     }, 1000);
     client.on("message", function(data) {
         if (allClients < 2){
-            console.log("Nobody to receive your message.");
+            console.log("*** Nobody to receive your message.");
             return;
         }
         //Send message to all clients except sender (broadcast)
         my_client.obj.broadcast.send(JSON.stringify({ message: '"' + data + '" from ClientID ' + my_client.id }));
-        console.log("ClientID " + my_client.id + " sent: " + data);
+        console.log("*** ClientID " + my_client.id + " sent: " + data);
     });
     client.on("disconnect", function() {
         clearTimeout(my_timer);
         allClients -= 1;
-        console.log("ClientID " + my_client.id + " is disconnected.");
+        console.log("*** ClientID " + my_client.id + " is disconnected.");
     });
 });
