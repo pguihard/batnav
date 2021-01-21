@@ -7,7 +7,7 @@ var app = express();
 var server = http.createServer(app);
 var socket = io(server);
 
-server.listen(5000);
+server.listen(5000, '0.0.0.0');
 console.log("Server is running and listening on 5000 port.");
 
 app.use(express.static(__dirname + "/public"));
