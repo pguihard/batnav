@@ -9,9 +9,8 @@ var socket = io(server);
 
 //That way it'll still listen to port 5000 when you test locally, but it will also work on Heroku.
 listenPort = process.env.PORT || 5000;
-server.listen(listenPort, () => {
-    console.log("Server is running and listening on " + listenPort + " port.");
-  });
+server.listen(listenPort, "0.0.0.0");
+console.log("Server is running and listening on " + listenPort + " port.");
 
 app.use(express.static(__dirname + "/public"));
 app.get("/", function(req, res, next){
