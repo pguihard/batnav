@@ -14,13 +14,18 @@ $(document).ready(function () {
         else {
             $("#client").text(obj.client);
             $("#clients").text(obj.clients);
+            if (obj.clients == "1 players"){
+                $("#alert").text("Please wait for the 2nd player to connect!");
+            }
+            else{
+                $("#alert").text("");
+            }
         }
     });
     sock.connect();
     $("#poke").click(function() {
         textClients = document.getElementById("clients").innerText;
         if(textClients == "1 players" ){
-            $("#message").text("There is nobody connected to receive your message!");
             return;
         }
         alert = document.getElementById("alert").innerText;
