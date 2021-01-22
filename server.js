@@ -45,7 +45,7 @@ socket.on("connection", function(client) {
             return;
         }
         //Send message to all clients except sender (broadcast)
-        my_client.obj.broadcast.send(JSON.stringify({ message: `"${data}" from ClientID ${my_client.id}`, alert: `Please Play!` }));
+        my_client.obj.broadcast.send(JSON.stringify({ message: `"${data}" from ClientID ${my_client.id}`, alert: `Please play!` }));
         console.log("*** ClientID " + my_client.id + " sent: " + data);
     });
     client.on("disconnect", function() {

@@ -14,10 +14,12 @@ $(document).ready(function () {
         else {
             $("#client").text(obj.client);
             $("#clients").text(obj.clients);
+            alert = document.getElementById("alert").innerText;
             if (obj.clients == "1 players"){
-                $("#alert").text("Please wait for the 2nd player to connect!");
+                $("#alert").text("Please wait for 2 players!");
+                $("#message").text("");
             }
-            else{
+            else if (alert == "Please wait for 2 players!"){
                 $("#alert").text("");
             }
         }
@@ -29,9 +31,9 @@ $(document).ready(function () {
             return;
         }
         alert = document.getElementById("alert").innerText;
-        if(alert == "Please Wait!" ){
+        if(alert == "Please wait!" ){
             return;
         }
-        $("#alert").text("Please Wait!");
+        $("#alert").text("Please wait!");
         sock.send(document.getElementById("toSend").value); });
 });
