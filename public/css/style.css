@@ -1,10 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,700);
 
-.timestamp, .client, .clients {
+.client, .clients {
 	border: 2px solid #a32424;
 	border-radius: 5px;
 }
-.message, .tosend {
+.message, .tosend, .alert {
 	border: 2px solid #73B1B7;
 	border-radius: 5px;
 	
