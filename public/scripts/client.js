@@ -35,5 +35,5 @@ $(document).ready(function () {
             return;
         }
         $("#alert").text("Please wait!");
-        sock.send(document.getElementById("toSend").value); });
+        sock.send(document.getElementById("tosend").value); });
 });
