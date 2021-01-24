@@ -1,22 +1,21 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,700);
 
 * {
-	border-radius: 5px;
 	width: fit-content;
 }
 .client, .clients {
-	border: 2px solid #a32424;
+	border: 1px solid #a32424;
 }
 .message, .alert {
-	border: 2px solid #73B1B7;
+	border: 1px solid #73B1B7;
 	
 	color: rgb(27, 58, 27);
 	background-color: bisque;
 }
 
 table {
-    border: 10px solid rgb(58, 134, 148);
+    border: 1px solid rgb(58, 134, 148);
 }
 td {
-    border: 10px solid rgb(138, 163, 231);
+    border: 1px solid rgb(138, 163, 231);
 }
