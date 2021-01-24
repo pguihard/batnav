@@ -64,8 +64,9 @@ $(document).ready(function () {
             $("#clients").text(obj.clients);
             alert = document.getElementById("alert").innerText;
             if (obj.clients == "1 players"){
-                $("#alert").text("Please wait for 2 players!");
+                $("#alert").text("Your opponent is not connected!");
                 $("#message").text("");
+                initGrid("1");
                 initGrid("2");
             }
             else if (alert == "Please wait for 2 players!"){
