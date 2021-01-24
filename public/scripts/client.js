@@ -1,3 +1,6 @@
+msg1 = "Your opponent is not connected!";
+msg2 = "Please wait!";
+
 function createGrid(boardn){
     var tableString = "<table>";
     for (row = 0; row < 10; row++) {
@@ -26,14 +29,14 @@ function clickOnBoard2(event, sock) {
         return;
     }
     alert = document.getElementById("alert").innerText;
-    if(alert == "Please wait!" ){
+    if(alert == msg2 ){
         return;
     }
     td = event.target.id;
     if (td == "board2"){
         return;
     }
-    $("#alert").text("Please wait!");
+    $("#alert").text(msg2);
     document.getElementById(td).innerText = "X";
     sock.send(td.substring(1));
 }
@@ -64,12 +67,12 @@ $(document).ready(function () {
             $("#clients").text(obj.clients);
             alert = document.getElementById("alert").innerText;
             if (obj.clients == "1 players"){
-                $("#alert").text("Your opponent is not connected!");
+                $("#alert").text(msg1);
                 $("#message").text("");
                 initGrid("1");
                 initGrid("2");
             }
-            else if (alert == "Please wait for 2 players!"){
+            else if (alert == msg1){
                 $("#alert").text("");
             }
         }
