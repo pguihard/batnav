@@ -37,7 +37,7 @@ socket.on("connection", function(client) {
     }
     console.log("*** ClientID " + my_client.id + " is connected.");
     my_timer = setInterval(function () {
-        my_client.obj.send(JSON.stringify({ client: `ID: ${my_client.id}`, clients: `${allClients} players`}));
+        my_client.obj.send(JSON.stringify({ client: `Player Id: ${my_client.id}`, clients: `${allClients} players`}));
     }, 1000);
     client.on("message", function(data) {
         if (allClients < 2){
@@ -45,7 +45,7 @@ socket.on("connection", function(client) {
             return;
         }
         //Send message to all clients except sender (broadcast)
-        my_client.obj.broadcast.send(JSON.stringify({ message: `"${data}" from ClientID ${my_client.id}`, alert: `Please play!` }));
+        my_client.obj.broadcast.send(JSON.stringify({ message: `${data}`, alert: `Please play!` }));
         console.log("*** ClientID " + my_client.id + " sent: " + data);
     });
     client.on("disconnect", function() {

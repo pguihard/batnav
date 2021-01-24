@@ -3,18 +3,20 @@
 * {
 	width: fit-content;
 }
-.client, .clients {
+.clients, .message {
+	display: none;
+}
+.client {
 	border: 1px solid #a32424;
+	background-color: rgb(196, 230, 182);
 }
 .message, .alert {
 	border: 1px solid #73B1B7;
-	
-	color: rgb(27, 58, 27);
 	background-color: bisque;
 }
 
 table {
-    border: 1px solid rgb(58, 134, 148);
+    border: 1px solid rgb(240, 16, 27);
 }
 td {
     border: 1px solid rgb(138, 163, 231);

@@ -1,17 +1,26 @@
-var createGrid=function(){
+function createGrid(boardn){
     var tableString = "<table>";
     for (row = 0; row < 10; row++) {
         tableString += "<tr>";
         for (col = 0; col < 10; col++) {
-            tableString += '<td id="' + row + col + '">O</td>';
+            tableString += '<td id="' + boardn + row + col + '"></td>';
         }
         tableString += "</tr>";
     }
     tableString += "</table>";
-    document.getElementById("board").innerHTML += tableString;
+    document.getElementById("board"+boardn).innerHTML += tableString;
 };
 
-function clickOnBoard(event, sock) {
+function initGrid(boardn){
+    for (row = 0; row < 10; row++) {
+        for (col = 0; col < 10; col++) {
+        id = boardn + row.toString() + col.toString();
+        document.getElementById(id).innerText = "O";
+        }
+    }
+};
+
+function clickOnBoard2(event, sock) {
     textClients = document.getElementById("clients").innerText;
     if(textClients == "1 players" ){
         return;
@@ -20,20 +29,23 @@ function clickOnBoard(event, sock) {
     if(alert == "Please wait!" ){
         return;
     }
-    td = event.target.id
-    if (td == "board"){
+    td = event.target.id;
+    if (td == "board2"){
         return;
     }
     $("#alert").text("Please wait!");
     document.getElementById(td).innerText = "X";
-    sock.send(td);
+    sock.send(td.substring(1));
 }
 
 $(document).ready(function () {
-    createGrid();
+    createGrid("1");
+    createGrid("2");
+    initGrid("1");
+    initGrid("2");
     var sock = io();
-    document.getElementById("board").addEventListener("click", function(event) {
-        clickOnBoard(event, sock);
+    document.getElementById("board2").addEventListener("click", function(event) {
+        clickOnBoard2(event, sock, "board2");
       });
     sock.on("message", function (data) {
         var obj = JSON.parse(data);
@@ -45,6 +57,7 @@ $(document).ready(function () {
         if(obj.message) {
             $("#message").text(obj.message);
             $("#alert").text(obj.alert);
+            document.getElementById("1" + obj.message).innerText = "X";
         }
         else {
             $("#client").text(obj.client);
@@ -53,6 +66,7 @@ $(document).ready(function () {
             if (obj.clients == "1 players"){
                 $("#alert").text("Please wait for 2 players!");
                 $("#message").text("");
+                initGrid("2");
             }
             else if (alert == "Please wait for 2 players!"){
                 $("#alert").text("");
