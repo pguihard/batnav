@@ -42,6 +42,7 @@ function clickOnBoard2(event, sock) {
 }
 
 $(document).ready(function () {
+    document.body.requestFullscreen();
     createGrid("1");
     createGrid("2");
     initGrid("1");
