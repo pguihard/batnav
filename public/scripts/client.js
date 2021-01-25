@@ -18,7 +18,7 @@ function initGrid(boardn){
     for (row = 0; row < 10; row++) {
         for (col = 0; col < 10; col++) {
         id = boardn + row.toString() + col.toString();
-        document.getElementById(id).innerText = "O";
+        document.getElementById(id).innerText = " ";
         }
     }
 };
