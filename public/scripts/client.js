@@ -33,7 +33,7 @@ function clickOnBoard2(event, sock) {
         return;
     }
     td = event.target.id;
-    if (td == "board2"){
+    if (td == "" || td.substring(0, 5) == "board"){
         return;
     }
     $("#alert").text(msg2);
