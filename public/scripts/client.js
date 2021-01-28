@@ -1,11 +1,22 @@
-msg1 = "Your opponent is not connected!";
-msg2 = "Please wait!";
+var msg01 = "Choisissez le cap ci-dessous et cochez la case correspondant à la poupe d'un bateau de ";
+var msg02 = " cases puis validez.";
+var msg03 = "Votre flotte est validée. Vous pouvez tirer sur la grille ci-dessus."
+
+var msg1 = "Your opponent is not connected!";
+var msg2 = "Please wait!";
+
+var shipId = 0; // 0-4
+// 5 ships [length, state, color], state: 0:intact 1:reached 2:sank
+var shipArea = [[5, 0, "#8ca78d"]]//, [4, 0, "#71ad73"], [3, 0, "#858f74"], [3, 0, "#7d9b48"], [2, 0, "#5c8b3c"]];
+//0:water, 1:reached, 2:sank, 3-7 ship Id
+var fleetArea = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
+                 [0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]];
 
 function createGrid(boardn){
     var tableString = "<table>";
-    for (row = 0; row < 10; row++) {
+    for (var row = 0; row < 10; row++) {
         tableString += "<tr>";
-        for (col = 0; col < 10; col++) {
+        for (var col = 0; col < 10; col++) {
             tableString += '<td id="' + boardn + row + col + '"></td>';
         }
         tableString += "</tr>";
@@ -15,11 +26,124 @@ function createGrid(boardn){
 };
 
 function initGrid(boardn){
-    for (row = 0; row < 10; row++) {
-        for (col = 0; col < 10; col++) {
-        id = boardn + row.toString() + col.toString();
-        document.getElementById(id).innerText = " ";
+    for (var row = 0; row < 10; row++) {
+        for (var col = 0; col < 10; col++) {
+        var id = boardn + row.toString() + col.toString();
+        document.getElementById(id).textContent = " ";
         }
+    }
+};
+// When many tries to set one ship
+// "x"s are temporary and changed to "X" when valisating
+function resetBoard1() {
+    for (var row = 0; row < 10; row++) {
+        for (var col = 0; col < 10; col++) {
+            var id = "1" + row.toString() + col.toString();
+            if (document.getElementById(id).textContent == "x") {
+                document.getElementById(id).textContent = " ";
+            }
+        }
+    }
+};
+//validate one ship converting temporary "x"s to "X"s.
+function validateShip() {
+    validated = false;
+    for (var row = 0; row < 10; row++) {
+        for (var col = 0; col < 10; col++) {
+            var id = "1" + row.toString() + col.toString();
+            if (document.getElementById(id).textContent == "x") {
+                document.getElementById(id).textContent = "X";
+                document.getElementById(id).style.backgroundColor = shipArea[shipId][2];
+                fleetArea[row][col] = shipId+3; //0:water, 1:reached, 2:sank, 3-7 ship Id
+                validated = true;
+            }
+        }
+    }
+    return validated;
+};
+
+function clickOnBoard1(event) {
+    if(shipId == shipArea.length) {
+        return;
+    }
+    resetBoard1();
+    var shipSize = shipArea[shipId][0]; // get the ship length
+    var td = event.target.id;
+    if (td == "" || td.substring(0, 5) == "board"){
+        return;
+    }
+    if (south.checked && parseInt(td.substring(1,2)) + shipSize <= 10) {
+        while (shipSize > 0) {
+            if (document.getElementById(td).textContent != " "){
+                resetBoard1();
+                return;
+            }
+            document.getElementById(td).textContent = "x";
+            var newval = parseInt(td.substring(1,2)) + 1;
+            td = td.substring(0,1) + newval.toString() + td.substring(2,3);
+            shipSize--;
+        }
+        return;
+    }
+    if (north.checked && parseInt(td.substring(1,2)) - shipSize >= -1) {
+        while (shipSize > 0) {
+            if (document.getElementById(td).textContent != " "){
+                resetBoard1();
+                return;
+            }
+            document.getElementById(td).textContent = "x";
+            var newval = parseInt(td.substring(1,2)) - 1;
+            td = td.substring(0,1) + newval.toString() + td.substring(2,3);
+            shipSize--;
+        }
+        return;
+    }
+    if (east.checked && parseInt(td.substring(2,3)) + shipSize <= 10) {
+        while (shipSize > 0) {
+            if (document.getElementById(td).textContent != " "){
+                resetBoard1();
+                return;
+            }
+            document.getElementById(td).textContent = "x";
+            var newval = parseInt(td.substring(2,3)) + 1;
+            td = td.substring(0,1) + td.substring(1,2) + newval.toString();
+            shipSize--;
+        }
+        return;
+    }
+    if (west.checked && parseInt(td.substring(2,3)) - shipSize >= -1) {
+        while (shipSize > 0) {
+            if (document.getElementById(td).textContent != " "){
+                resetBoard1();
+                return;
+            }
+            document.getElementById(td).textContent = "x";
+            var newval = parseInt(td.substring(2,3)) - 1;
+            td = td.substring(0,1) + td.substring(1,2) + newval.toString();
+            shipSize--;
+        }
+        return;
+    }
+}
+
+function validate(){
+    if(shipId == shipArea.length) {
+        return;
+    }
+    if (validateShip()){
+        shipId++;
+        if(shipId == shipArea.length) {
+            lnorth.style.display = "none"; north.style.display = "none";
+            lsouth.style.display = "none"; south.style.display = "none";
+            least.style.display = "none"; east.style.display = "none";
+            lwest.style.display = "none"; west.style.display = "none";
+            validation.style.display = "none";
+            $("#alert").text(msg03);
+            createGrid("2"); initGrid("2");   
+            comWithServer();
+            return;
+        }
+        $("#alert").text(msg01  + shipArea[shipId][0] + msg02);
     }
 };
 
@@ -41,11 +165,7 @@ function clickOnBoard2(event, sock) {
     sock.send(td.substring(1));
 }
 
-$(document).ready(function () {
-    createGrid("1");
-    createGrid("2");
-    initGrid("1");
-    initGrid("2");
+function comWithServer(){
     var sock = io();
     document.getElementById("board2").addEventListener("click", function(event) {
         clickOnBoard2(event, sock, "board2");
@@ -78,4 +198,13 @@ $(document).ready(function () {
         }
     });
     sock.connect();
+}
+
+$(document).ready(function () {
+    createGrid("1"); initGrid("1");
+    $("#alert").text(msg01  + shipArea[shipId][0] + msg02);
+    document.getElementById("board1").addEventListener("click", function(event) {
+        clickOnBoard1(event);
+    });
+    document.getElementById("validation").addEventListener("click", validate);
 });

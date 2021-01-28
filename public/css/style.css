@@ -6,19 +6,27 @@
 
 .client {
 	border: 1px solid #a32424;
-	background-color: rgb(196, 230, 182);
-}
-.message, .alert {
-	border: 1px solid #73B1B7;
-	background-color: bisque;
+	background-color: #c4e6b6;
 }
 
-table {
-	border: 1px solid rgb(240, 16, 27);
+.message, .alert {
+	border: 1px solid #73B1B7;
+	background-color: #ffe3c2;
+}
+
+.board1 > table {
+	border: 1px solid #1039f0;
+	background-image: url("../images/sea.gif");
+}
+
+.board2 > table {
+	border: 1px solid #1039f0;
+	background-image: url("../images/radar.gif");
+	background-position: center;
 }
 
 td {
-	border: 1px solid rgb(138, 163, 231);
+	border: 1px solid #0b0d13;
 	width: 50px;
 	height: 25px;
 	text-align: center;
