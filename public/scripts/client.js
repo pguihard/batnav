@@ -6,8 +6,8 @@ var msg1 = "Votre adversaire n'est pas connecté.";
 var msg2 = "Svp Attendez!";
 
 var shipId = 0; // 0-4
-// 5 ships [length, state, color], state: 0:intact 1:reached 2:sank
-var shipArea = [[5, 0, "#8ca78d"]]//, [4, 0, "#71ad73"], [3, 0, "#858f74"], [3, 0, "#7d9b48"], [2, 0, "#5c8b3c"]];
+// 5 ships [length, state, initial color], state: 0:intact 1:reached 2:sank
+var shipArea = [[5, 0, "#8ca78d"]] //, [4, 0, "#71ad73"], [3, 0, "#858f74"], [3, 0, "#7d9b48"], [2, 0, "#5c8b3c"]];
 //0:water, 1:reached, 2:sank, 3-7 ship Id
 var fleetArea = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
                  [0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]];
@@ -41,6 +41,7 @@ function resetBoard1() {
             var id = "1" + row.toString() + col.toString();
             if (document.getElementById(id).textContent == "x") {
                 document.getElementById(id).textContent = " ";
+                document.getElementById(id).style.backgroundColor = "";
             }
         }
     }
@@ -79,6 +80,7 @@ function clickOnBoard1(event) {
                 return;
             }
             document.getElementById(td).textContent = "x";
+            document.getElementById(td).style.backgroundColor = shipArea[shipId][2];
             var newval = parseInt(td.substring(1,2)) + 1;
             td = td.substring(0,1) + newval.toString() + td.substring(2,3);
             shipSize--;
@@ -92,6 +94,7 @@ function clickOnBoard1(event) {
                 return;
             }
             document.getElementById(td).textContent = "x";
+            document.getElementById(td).style.backgroundColor = shipArea[shipId][2];
             var newval = parseInt(td.substring(1,2)) - 1;
             td = td.substring(0,1) + newval.toString() + td.substring(2,3);
             shipSize--;
@@ -105,6 +108,7 @@ function clickOnBoard1(event) {
                 return;
             }
             document.getElementById(td).textContent = "x";
+            document.getElementById(td).style.backgroundColor = shipArea[shipId][2];
             var newval = parseInt(td.substring(2,3)) + 1;
             td = td.substring(0,1) + td.substring(1,2) + newval.toString();
             shipSize--;
@@ -118,6 +122,7 @@ function clickOnBoard1(event) {
                 return;
             }
             document.getElementById(td).textContent = "x";
+            document.getElementById(td).style.backgroundColor = shipArea[shipId][2];
             var newval = parseInt(td.substring(2,3)) - 1;
             td = td.substring(0,1) + td.substring(1,2) + newval.toString();
             shipSize--;
@@ -165,6 +170,29 @@ function clickOnBoard2(event, sock) {
     sock.send(td.substring(1));
 }
 
+function getTheShot(coord){
+    var row = parseInt(coord.substring(0, 1));
+    var col = parseInt(coord.substring(1, 2));
+    document.getElementById("1" + coord).innerText = "O";
+    if (fleetArea[row][col] == 0) {
+        //into the water
+        document.getElementById("1" + coord).style.backgroundColor = "#73B1B7";        
+    }
+    else {
+        //reached
+        document.getElementById("1" + coord).style.backgroundColor = "#e78b8b";
+        if (--shipArea[ fleetArea[row][col] - 3][0] == 0) {
+            //sank
+            document.getElementById("1" + coord).style.backgroundColor = "#f72929";            
+        }
+        else {
+            //just reached
+            document.getElementById("1" + coord).style.backgroundColor = "#e78b8b";
+            
+        }
+    }
+}
+
 function comWithServer(){
     var sock = io();
     document.getElementById("board2").addEventListener("click", function(event) {
@@ -178,9 +206,10 @@ function comWithServer(){
             return;
         }
         if(obj.message) {
+            // shot receive
             $("#message").text(obj.message);
             $("#alert").text(obj.alert);
-            document.getElementById("1" + obj.message).innerText = "X";
+            getTheShot(obj.message);
         }
         else {
             $("#client").text(obj.client);
