@@ -1,3 +1,4 @@
+var msg11 = "Svp Jouez!"
 
 var io = require("socket.io");
 var express = require("express");
@@ -45,7 +46,7 @@ socket.on("connection", function(client) {
             return;
         }
         //Send message to all clients except sender (broadcast)
-        my_client.obj.broadcast.send(JSON.stringify({ message: `${data}`, alert: `Please play!` }));
+        my_client.obj.broadcast.send(JSON.stringify({ message: `${data}`, alert: `${msg11}` }));
         console.log("*** ClientID " + my_client.id + " sent: " + data);
     });
     client.on("disconnect", function() {

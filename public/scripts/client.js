@@ -2,8 +2,8 @@ var msg01 = "Choisissez le cap ci-dessous et cochez la case correspondant à la 
 var msg02 = " cases puis validez.";
 var msg03 = "Votre flotte est validée. Vous pouvez tirer sur la grille ci-dessus."
 
-var msg1 = "Your opponent is not connected!";
-var msg2 = "Please wait!";
+var msg1 = "Votre adversaire n'est pas connecté.";
+var msg2 = "Svp Attendez!";
 
 var shipId = 0; // 0-4
 // 5 ships [length, state, color], state: 0:intact 1:reached 2:sank
@@ -189,7 +189,6 @@ function comWithServer(){
             if (obj.clients == "1 players"){
                 $("#alert").text(msg1);
                 $("#message").text("");
-                initGrid("1");
                 initGrid("2");
             }
             else if (alert == msg1){
