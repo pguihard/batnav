@@ -4,6 +4,8 @@ var msg03 = "Votre flotte est validée. Vous pouvez tirer sur la grille ci-dessu
 
 var msg1 = "Votre adversaire n'est pas connecté.";
 var msg2 = "Svp Attendez!";
+var msg3 = "Vous avez perdu!"
+var msg4 = "Vous avez gagné!"
 
 var colorMissed = "#73B1B7";
 var colorReached = "#e78b8b";
@@ -16,6 +18,8 @@ var shipArea = [[5, "#8ca78d"]]//, [4, "#71ad73"], [3, "#858f74"], [3, "#7d9b48"
 //0:water, 1-5 ship Id, shipId x 10: reached, shipId x 10 + 1: sank
 var fleetArea = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
                  [0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]];
+var fleetLen = 0;
+var shotsNum = 0; //number of sunk ennemy ships
 
 function createGrid(boardn){
     var tableString = "<table>";
@@ -149,7 +153,6 @@ function validate(){
             lwest.style.display = "none"; west.style.display = "none";
             validation.style.display = "none";
             $("#alert").text(msg03);
-            console.log(fleetArea);
             createGrid("2"); initGrid("2");   
             comWithServer();
             return;
@@ -159,6 +162,9 @@ function validate(){
 };
 
 function clickOnBoard2(event, sock) {
+    if (fleetLen == 0 || shotsNum == 0) {
+        return;
+    }
     textClients = document.getElementById("clients").innerText;
     if(textClients == "1 players" ){
         return;
@@ -198,8 +204,12 @@ function getTheShot(coord, sock){
         document.getElementById("1" + coord).style.backgroundColor = colorMissed;
         sock.send("M" + coord);
     }
-    else if (fleetArea[row][col] < 10) {
-        if (--shipArea[ fleetArea[row][col] - 1][0] == 0) {
+    else if (fleetArea[row][col] < 10) { //test if shot against a valid part of ship
+        fleetLen--;
+        if (fleetLen == 0) {
+            $("#alert").text(msg3);
+        }
+        if (--shipArea[ fleetArea[row][col] - 1][0] == 0) { //test the current length of the ship
             //sunk
             fleetArea[row][col] *= 10;
             shipIsSunk(fleetArea[row][col], sock);
@@ -224,7 +234,11 @@ function getTheResponse(msg) {
             break;
         case "S":
             document.getElementById("2" + coord).style.backgroundColor = colorSunk;
+            shotsNum--;
             break;
+    }
+    if (shotsNum == 0) { //You have won
+        $("#alert").text(msg4);
     }
 }
 
@@ -268,6 +282,10 @@ function comWithServer(){
 }
 
 $(document).ready(function () {
+    for(var ind = 0; ind < shipArea.length; ind++) {
+        fleetLen += shipArea[ind][0];
+        shotsNum = fleetLen;
+    }
     createGrid("1"); initGrid("1");
     $("#alert").text(msg01  + shipArea[shipId][0] + msg02);
     document.getElementById("board1").addEventListener("click", function(event) {
