@@ -5,6 +5,11 @@ var msg03 = "Votre flotte est validée. Vous pouvez tirer sur la grille ci-dessu
 var msg1 = "Votre adversaire n'est pas connecté.";
 var msg2 = "Svp Attendez!";
 
+var colorMissed = "#73B1B7";
+var colorReached = "#e78b8b";
+var colorSunk = "#f72929";
+
+
 var shipId = 0; // 0-4
 // 5 ships [length, initial color]
 var shipArea = [[5, "#8ca78d"]]//, [4, "#71ad73"], [3, "#858f74"], [3, "#7d9b48"], [2, "#5c8b3c"]];
@@ -171,37 +176,55 @@ function clickOnBoard2(event, sock) {
     sock.send(td.substring(1));
 }
 
-function shipIsSank (ship_Id) {
+function shipIsSunk (ship_Id, sock) {
     for (var row = 0; row < 10; row++) {
         for (var col = 0; col < 10; col++) {
             if (fleetArea[row][col] == ship_Id) {
                 var id = "1" + row.toString() + col.toString();
-                document.getElementById(id).style.backgroundColor = "#f72929";
+                document.getElementById(id).style.backgroundColor = colorSunk;
+                sock.send("S" + row.toString() + col.toString());
                 fleetArea[row][col] += 1;
             }
         }
     }
 }
 
-function getTheShot(coord){
+function getTheShot(coord, sock){
     var row = parseInt(coord.substring(0, 1));
     var col = parseInt(coord.substring(1, 2));
     document.getElementById("1" + coord).innerText = "O";
     if (fleetArea[row][col] == 0) {
-        //into the water
-        document.getElementById("1" + coord).style.backgroundColor = "#73B1B7";        
+        //missed
+        document.getElementById("1" + coord).style.backgroundColor = colorMissed;
+        sock.send("M" + coord);
     }
     else if (fleetArea[row][col] < 10) {
         if (--shipArea[ fleetArea[row][col] - 1][0] == 0) {
-            //sank
+            //sunk
             fleetArea[row][col] *= 10;
-            shipIsSank(fleetArea[row][col]);
+            shipIsSunk(fleetArea[row][col], sock);
         }
         else {
             //just reached
-            document.getElementById("1" + coord).style.backgroundColor = "#e78b8b";
+            document.getElementById("1" + coord).style.backgroundColor = colorReached;
+            sock.send("R" + coord);
             fleetArea[row][col] *= 10;
         }
+    }
+}
+
+function getTheResponse(msg) {
+    var coord = msg.substring(1);
+    switch (msg.substring(0,1)) {
+        case "M":
+            document.getElementById("2" + coord).style.backgroundColor = colorMissed;
+            break;
+        case "R":
+            document.getElementById("2" + coord).style.backgroundColor = colorReached;
+            break;
+        case "S":
+            document.getElementById("2" + coord).style.backgroundColor = colorSunk;
+            break;
     }
 }
 
@@ -221,7 +244,11 @@ function comWithServer(){
             // shot receive
             $("#message").text(obj.message);
             $("#alert").text(obj.alert);
-            getTheShot(obj.message);
+            if (isNaN(obj.message.substring(0,1))) {
+                getTheResponse(obj.message);
+            } else {
+                getTheShot(obj.message, sock);
+            }
         }
         else {
             $("#client").text(obj.client);
