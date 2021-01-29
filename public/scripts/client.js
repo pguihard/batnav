@@ -3,7 +3,10 @@ var msg02 = " cases puis validez.";
 var msg03 = "Votre flotte est validée. Vous pouvez tirer sur la grille ci-dessus."
 
 var msg1 = "Votre adversaire n'est pas connecté.";
-var msg2 = "Svp Attendez!";
+var msg2 = "A votre adversaire de jouer, ";
+var msg20 = "Vous avez manqué votre cible.";
+var msg21 = "Vous avez touché un navire.";
+var msg22 = "Vous avez coulé un navire.";
 var msg3 = "Vous avez perdu!"
 var msg4 = "Vous avez gagné!"
 
@@ -170,7 +173,7 @@ function clickOnBoard2(event, sock) {
         return;
     }
     alert = document.getElementById("alert").innerText;
-    if(alert == msg2 ){
+    if(alert.substring(0, msg2.length) == msg2 ){
         return;
     }
     td = event.target.id;
@@ -178,7 +181,9 @@ function clickOnBoard2(event, sock) {
         return;
     }
     $("#alert").text(msg2);
-    document.getElementById(td).innerText = "X";
+    document.getElementById(td).innerText = "O";
+    document.getElementById(td).style.borderRadius = "100%";
+
     sock.send(td.substring(1));
 }
 
@@ -199,6 +204,7 @@ function getTheShot(coord, sock){
     var row = parseInt(coord.substring(0, 1));
     var col = parseInt(coord.substring(1, 2));
     document.getElementById("1" + coord).innerText = "O";
+    document.getElementById("1" + coord).style.borderRadius = "100%";
     if (fleetArea[row][col] == 0) {
         //missed
         document.getElementById("1" + coord).style.backgroundColor = colorMissed;
@@ -225,15 +231,19 @@ function getTheShot(coord, sock){
 
 function getTheResponse(msg) {
     var coord = msg.substring(1);
+    var alert = document.getElementById("alert").innerText;
     switch (msg.substring(0,1)) {
         case "M":
             document.getElementById("2" + coord).style.backgroundColor = colorMissed;
+            $("#alert").text(alert + msg20);
             break;
         case "R":
             document.getElementById("2" + coord).style.backgroundColor = colorReached;
+            $("#alert").text(alert + msg21);
             break;
         case "S":
             document.getElementById("2" + coord).style.backgroundColor = colorSunk;
+            $("#alert").text(alert + msg22);
             shotsNum--;
             break;
     }

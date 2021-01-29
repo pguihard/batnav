@@ -6,21 +6,23 @@
 
 .client {
 	border: 1px solid #f72929;
-	background-color: #c4e6b6;
+	background-color: #64c2d3;
+	width: 100px;
 }
 
-.message, .alert {
+.alert {
 	border: 1px solid #73B1B7;
-	background-color: #ffe3c2;
+	background-color: #acdfb0;
+	width: 480px;
 }
 
 .board1 > table {
-	border: 1px solid #1039f0;
+	border: 1px solid #21d9fa;
 	background-image: url("../images/sea.gif");
 }
 
 .board2 > table {
-	border: 1px solid #1039f0;
+	border: 1px solid #23f010;
 	background-image: url("../images/radar.gif");
 	background-position: center;
 }
