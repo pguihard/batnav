@@ -1,8 +1,9 @@
 var msg01 = "Choisissez le cap ci-dessous et cochez la case correspondant à la poupe d'un bateau de ";
 var msg02 = " cases puis validez.";
-var msg03 = "Votre flotte est validée. Vous pouvez tirer sur la grille ci-dessus."
+var msg03 = "Votre flotte est validée.";
+var msg030 = "Vous pouvez jouer.";
 
-var msg1 = "Votre adversaire n'est pas connecté.";
+var msg1 = "Votre adversaire n'a pas validé sa flotte.";
 var msg2 = "A votre adversaire de jouer.";
 var msg20 = "> Manqué. ";
 var msg21 = "> Touché. ";
@@ -155,7 +156,7 @@ function validate(){
             least.style.display = "none"; east.style.display = "none";
             lwest.style.display = "none"; west.style.display = "none";
             validation.style.display = "none";
-            $("#alert").text(msg03);
+            $("#alert").text(msg03 + msg030);
             createGrid("2"); initGrid("2");   
             comWithServer();
             return;
@@ -283,7 +284,7 @@ function comWithServer(){
                 initGrid("2");
             }
             else if (alert == msg1){
-                $("#alert").text("");
+                $("#alert").text(msg030);
             }
         }
     });
