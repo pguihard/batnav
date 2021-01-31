@@ -1,4 +1,4 @@
-var msg11 = "Svp Jouez!"
+var msg11 = "A vous de jouer."
 
 var io = require("socket.io");
 var express = require("express");

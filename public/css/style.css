@@ -1,35 +1,38 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,700);
 
-.clients, .message {
+#clients, #message {
 	display: none;
 }
 
-.client {
+#client {
 	border: 1px solid #f72929;
 	background-color: #64c2d3;
-	width: 100px;
 }
 
-.alert {
+#alert {
 	border: 1px solid #73B1B7;
 	background-color: #acdfb0;
-	width: 480px;
 }
 
-.board1 > table {
+#board1 > table {
 	border: 1px solid #21d9fa;
 	background-image: url("../images/sea.gif");
 }
 
-.board2 > table {
+#board2 > table {
 	border: 1px solid #23f010;
 	background-image: url("../images/radar.gif");
 	background-position: center;
 }
 
+table {
+	width: 100%;
+	height: 40%;
+}
+
 td {
 	border: 1px solid #0b0d13;
-	width: 50px;
-	height: 25px;
+	width: 3ch;
+	height: 2ch;
 	text-align: center;
 }

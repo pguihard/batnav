@@ -3,10 +3,10 @@ var msg02 = " cases puis validez.";
 var msg03 = "Votre flotte est validée. Vous pouvez tirer sur la grille ci-dessus."
 
 var msg1 = "Votre adversaire n'est pas connecté.";
-var msg2 = "A votre adversaire de jouer, ";
-var msg20 = "Vous avez manqué votre cible.";
-var msg21 = "Vous avez touché un navire.";
-var msg22 = "Vous avez coulé un navire.";
+var msg2 = "A votre adversaire de jouer.";
+var msg20 = "> Manqué. ";
+var msg21 = "> Touché. ";
+var msg22 = "> Coulé. ";
 var msg3 = "Vous avez perdu!"
 var msg4 = "Vous avez gagné!"
 
@@ -173,14 +173,13 @@ function clickOnBoard2(event, sock) {
         return;
     }
     alert = document.getElementById("alert").innerText;
-    if(alert.substring(0, msg2.length) == msg2 ){
+    if(alert.substring(0, 1) == ">" ){
         return;
     }
     td = event.target.id;
     if (td == "" || td.substring(0, 5) == "board"){
         return;
     }
-    $("#alert").text(msg2);
     document.getElementById(td).innerText = "O";
     document.getElementById(td).style.borderRadius = "100%";
 
@@ -235,15 +234,15 @@ function getTheResponse(msg) {
     switch (msg.substring(0,1)) {
         case "M":
             document.getElementById("2" + coord).style.backgroundColor = colorMissed;
-            $("#alert").text(alert + msg20);
+            $("#alert").text(msg20 + msg2);
             break;
         case "R":
             document.getElementById("2" + coord).style.backgroundColor = colorReached;
-            $("#alert").text(alert + msg21);
+            $("#alert").text(msg21 + msg2);
             break;
         case "S":
             document.getElementById("2" + coord).style.backgroundColor = colorSunk;
-            $("#alert").text(alert + msg22);
+            $("#alert").text(msg22 + msg2);
             shotsNum--;
             break;
     }
