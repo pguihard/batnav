@@ -1,9 +1,10 @@
 var msg01 = "Choisissez le cap ci-dessous et cochez la case correspondant à la poupe d'un bateau de ";
 var msg02 = " cases puis validez.";
-var msg03 = "Votre flotte est validée.";
+var msg03 = "Votre flotte est validée. ";
 var msg030 = "Vous pouvez jouer.";
 
-var msg1 = "Votre adversaire n'a pas validé sa flotte.";
+var msg1 = "Votre adversaire n'est pas prêt à jouer.";
+var msg11 = "Votre adversaire s'est déconnecté en cours de jeu. Reconnectez vous.";
 var msg2 = "A votre adversaire de jouer.";
 var msg20 = "> Manqué. ";
 var msg21 = "> Touché. ";
@@ -18,12 +19,14 @@ var colorSunk = "#f72929";
 
 var shipId = 0; // 0-4
 // 5 ships [length, initial color]
-var shipArea = [[5, "#8ca78d"]]//, [4, "#71ad73"], [3, "#858f74"], [3, "#7d9b48"], [2, "#5c8b3c"]];
+var shipArea = [[5, "#8ca78d"], [4, "#71ad73"], [3, "#858f74"], [3, "#7d9b48"], [2, "#5c8b3c"]];
 //0:water, 1-5 ship Id, shipId x 10: reached, shipId x 10 + 1: sank
 var fleetArea = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
                  [0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]];
 var fleetLen = 0;
 var shotsNum = 0; //number of sunk ennemy ships
+
+var nShots = 0; //number of shots
 
 function createGrid(boardn){
     var tableString = "<table>";
@@ -156,7 +159,7 @@ function validate(){
             least.style.display = "none"; east.style.display = "none";
             lwest.style.display = "none"; west.style.display = "none";
             validation.style.display = "none";
-            $("#alert").text(msg03 + msg030);
+            $("#alert").text(msg03 + msg030); //
             createGrid("2"); initGrid("2");   
             comWithServer();
             return;
@@ -185,6 +188,7 @@ function clickOnBoard2(event, sock) {
     document.getElementById(td).style.borderRadius = "100%";
 
     sock.send(td.substring(1));
+    nShots++;
 }
 
 function shipIsSunk (ship_Id, sock) {
@@ -274,12 +278,17 @@ function comWithServer(){
                 getTheShot(obj.message, sock);
             }
         }
-        else {
+        else { // sent by server every seconds
             $("#client").text(obj.client);
             $("#clients").text(obj.clients);
             alert = document.getElementById("alert").innerText;
             if (obj.clients == "1 players"){
-                $("#alert").text(msg1);
+                if (nShots == 0){
+                    $("#alert").text(msg1);
+                    
+                } else {
+                    $("#alert").text(msg11);
+                }
                 $("#message").text("");
                 initGrid("2");
             }
