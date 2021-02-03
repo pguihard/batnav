@@ -25,6 +25,22 @@
 	background-position: center;
 }
 
+#lnorth {
+	background-color: #21d9fa;
+}
+
+#least {
+	background-color: #c1f1fa;
+}
+
+#lsouth {
+	background-color: #21d9fa;
+}
+
+#lwest {
+	background-color: #c1f1fa;
+}
+
 table {
 	width: 100%;
 	height: 45%;
