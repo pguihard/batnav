@@ -1,0 +1,33 @@
+#alert {
+	border: 1px solid #73B1B7;
+	background-color: #acdfb0;
+}
+
+#board1 > table {
+	border: 1px solid #21d9fa;
+	background-image: url("../images/sea.gif");
+}
+
+.buttons {
+	width: 150px;
+
+	margin: 10px auto;
+	border: 2px solid #5052c2;
+	border-radius: 10px;
+	background-color: #cccccc;
+	text-align: center;
+
+	cursor: pointer;
+}
+
+table {
+	width: 100%;
+	height: 45%;
+}
+
+td {
+	border: 1px solid #0b0d13;
+	width: 3ch;
+	height: 2ch;
+	text-align: center;
+}
