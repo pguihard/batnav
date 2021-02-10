@@ -81,14 +81,15 @@ function shotAtRandom (minr, maxr, minc, maxc) {
 
 function aroundTheCell(row, col) {
     var direction = 0;
+/*  
     console.log(myFleet);
     console.log("around the cell: " + row + col);
     console.log(">nor wes sou eas: " + nor + wes + sou + eas);
     console.log("computerShot: " + computerShot);
-
+*/
     if (nor != -1) {
         nor--;
-        if (nor >= 0 && myFleet[nor][col] <= 9) {
+        if (nor >= 0 && myFleet[nor][col] < 9) {
             direction = nor;
             if (myFleet[nor][col] == 0) {
                 nor = -1; wes = col;
@@ -102,7 +103,7 @@ function aroundTheCell(row, col) {
 
     if (wes != -1) {
         wes--;
-        if (wes >= 0 && myFleet[row][wes] <= 9) {
+        if (wes >= 0 && myFleet[row][wes] < 9) {
             direction = wes;
             if (myFleet[row][wes] == 0) {
                 wes = -1; sou = row;
@@ -116,7 +117,7 @@ function aroundTheCell(row, col) {
     
     if (sou != -1) {
         sou++;
-        if (sou <= 9 && myFleet[sou][col] <= 9) {
+        if (sou <= 9 && myFleet[sou][col] < 9) {
             direction = sou;
             if (myFleet[sou][col] == 0) {
                 sou = -1; eas = col;
@@ -130,7 +131,7 @@ function aroundTheCell(row, col) {
 
     if (eas != -1) {
         eas++;
-        if (eas <= 9 && myFleet[row][eas] <= 9) {
+        if (eas <= 9 && myFleet[row][eas] < 9) {
             direction = eas;
             if (myFleet[row][eas] == 0) {
                 eas = -1;
@@ -142,7 +143,7 @@ function aroundTheCell(row, col) {
         }
     }
     
-    console.log("<nor wes sou eas: " + nor + wes + sou + eas);
+    //console.log("<nor wes sou eas: " + nor + wes + sou + eas);
     return shotAtRandom(0, 9, 0, 9);
 }
 
@@ -160,12 +161,12 @@ function computeTheShot() { //computer against my fleet
         var prow = parseInt(reachedShot.substring(0, 1));
         var pcol = parseInt(reachedShot.substring(1, 2));
         if (reached.indexOf(myFleet[prow][pcol]) != -1) {
-            console.log("**** ship " + reachedShot + " is reached.");
+            //console.log("**** ship " + reachedShot + " is reached.");
             computerShot = aroundTheCell(prow, pcol);
             return computerShot;
         }
         if (sank.indexOf(myFleet[prow][pcol]) != -1) {
-            console.log("**** ship " + reachedShot + " is sank.");
+            //console.log("**** ship " + reachedShot + " is sank.");
             reachedShot = "**";
         }
     }
@@ -204,7 +205,7 @@ $(document).ready(function () {
     }
     myFleet = mylocalobj.myfleet;
     buildTheFleetAtRandom(computerFleet);
-    console.log(">>>computerFleet: " + computerFleet);
+    //console.log(">>>computerFleet: " + computerFleet);
 
     createGrid("1"); initGrid2("1", mylocalobj.myfleet);
     createGrid("2"); initGrid("2");
