@@ -151,6 +151,12 @@ $(document).ready(function () {
 	});
 
     $(".play").on("click", function() {
+        if (mylocalobj.players == 1) {
+			mylocalobj.myfleet = fleetArea;
+			myobjet_json = JSON.stringify(mylocalobj);
+			localStorage.setItem("mylocalobj",myobjet_json);
+			window.location.replace("../pages/onePlayer.html");
+		}
 		if (mylocalobj.players == 2) {
 			mylocalobj.myfleet = fleetArea;
 			myobjet_json = JSON.stringify(mylocalobj);

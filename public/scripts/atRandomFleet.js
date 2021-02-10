@@ -1,69 +1,3 @@
-// return an interger at random between a min value (included)
-// and a max value (included).
-function getRandomIntInclusive(min, max) {
-	min = Math.ceil(min);
-	max = Math.floor(max);
-	return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-  function resetFleet(shipId, fleetArea) {
-	for (var row = 0; row < 10; row++) {
-        for (var col = 0; col < 10; col++) {
-            if (fleetArea[row][col] == shipId) {
-				fleetArea[row][col] = 0;
-			}
-        }
-    }
-  }
-
-function putOneShip (fleetArea, shipId) {
-	
-	var direction = getRandomIntInclusive(0, 1); //0:North, 1:South, 2:East, 3:West
-	
-	var row = 0;
-	var col = 0;
-	var collision = true;
-	var shipSize = shipArea[shipId-1][0];
-
-	while(collision) {
-		if (collision) {
-			resetFleet(shipId, fleetArea);
-		}
-		collision = false;
-		switch (direction) {
-			case 0:	//North
-				row = getRandomIntInclusive(shipSize-1, 9);
-				col = getRandomIntInclusive(0, 9);
-				for(var ind = 0; ind < shipSize; ind++) {
-					if (fleetArea[row - ind][col] != 0) {
-						collision = true;
-					}
-					else {
-						fleetArea[row - ind][col] = shipId;
-					}
-				}
-				break;
-			case 1:	//South
-				row = getRandomIntInclusive(0, 9);
-				col = getRandomIntInclusive(0, 10-shipSize);
-				for(var ind = 0; ind < shipSize; ind++) {
-					if (fleetArea[row][col + ind] != 0) {
-						collision = true;
-					} else {
-						fleetArea[row][col + ind] = shipId;
-					}
-				}
-				break;
-		}
-	}
-}
-function buildTheFleetAtRandom(fleetArea) {
-	putOneShip (fleetArea, 1);
-	putOneShip (fleetArea, 2);
-	putOneShip (fleetArea, 3);
-	putOneShip (fleetArea, 4);
-	putOneShip (fleetArea, 5);
-}
 
 function resetBoard1() {
     for (var row = 0; row < 10; row++) {
@@ -99,6 +33,12 @@ $(document).ready(function() {
 	});
 
 	$(".play").on("click", function() {
+		if (mylocalobj.players == 1) {
+			mylocalobj.myfleet = fleetArea;
+			myobjet_json = JSON.stringify(mylocalobj);
+			localStorage.setItem("mylocalobj",myobjet_json);
+			window.location.replace("../pages/onePlayer.html");
+		}
 		if (mylocalobj.players == 2) {
 			mylocalobj.myfleet = fleetArea;
 			myobjet_json = JSON.stringify(mylocalobj);

@@ -9,8 +9,6 @@ $(document).ready(function() {
 		}
 		if (onePlayer.checked) {
 			mylocalobj.players = 1;	
-			$("#alert").text("Option non disponible pour le moment.");
-			return;
 		}
 		myobjet_json = JSON.stringify(mylocalobj);
 		localStorage.setItem("mylocalobj",myobjet_json);

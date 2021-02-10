@@ -1,22 +1,4 @@
-var msg030 = "Vous pouvez jouer.";
-
-var msg1 = "Votre adversaire n'est pas prêt à jouer.";
-var msg11 = "Votre adversaire s'est déconnecté en cours de jeu. Reconnectez vous.";
-var msg2 = "A votre adversaire de jouer.";
-var msg20 = "> Manqué. ";
-var msg21 = "> Touché. ";
-var msg22 = "> Coulé. ";
-var msg3 = "Vous avez perdu!"
-var msg4 = "Vous avez gagné!"
-
-var colorMissed = "#73B1B7";
-var colorReached = "#e78b8b";
-var colorSunk = "#f72929";
-
-
-var shipId = 0; // 1-5
-// 5 ships [length, initial color]
-//0:water, 1-5 ship Id, shipId x 10: reached, shipId x 10 + 1: sank
+//0: water, 1-5: ship Id, 9: missed, shipId x 10: reached, shipId x 10 + 1: sank
 var fleetArea = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]];
 var fleetLen = 0;
@@ -67,10 +49,11 @@ function getTheShot(coord, sock){
     document.getElementById("1" + coord).style.borderRadius = "100%";
     if (fleetArea[row][col] == 0) {
         //missed
+        fleetArea[row][col] = 9;
         document.getElementById("1" + coord).style.backgroundColor = colorMissed;
         sock.send("M" + coord);
     }
-    else if (fleetArea[row][col] < 10) { //test if shot against a valid part of ship
+    else if (fleetArea[row][col] < 9) { //test if shot against a valid part of ship
         fleetLen--;
         if (fleetLen == 0) {
             $("#alert").text(msg3);
@@ -114,9 +97,7 @@ function getTheResponse(msg) {
 
 function comWithServer(){
     var sock = io();
-    document.getElementById("board2").addEventListener("click", function(event) {
-        clickOnBoard2(event, sock, "board2");
-      });
+    
     sock.on("message", function (data) {
         var obj = JSON.parse(data);
         if (obj.message == "disconnect"){
@@ -167,5 +148,8 @@ $(document).ready(function () {
     fleetArea = mylocalobj.myfleet;
     createGrid("1"); initGrid2("1", mylocalobj.myfleet);
     createGrid("2"); initGrid("2");
+    document.getElementById("board2").addEventListener("click", function(event) {
+        clickOnBoard2(event, sock);
+      });
     comWithServer();
 });
