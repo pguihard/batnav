@@ -1,3 +1,5 @@
+// Here the player is fighting against the computer
+
 //0: water, 1-5: ship Id, 9: missed, shipId x 10: reached, shipId x 10 + 1: sank
 var myFleet = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]];
@@ -14,7 +16,6 @@ var nor = -1;
 var wes = -1;
 var sou = -1;
 var eas = -1;
-//var computerShot2 = "**";
 
 var aShip = [1, 2, 3, 4, 5];
 var reached = [10, 20, 30, 40, 50];
@@ -70,29 +71,27 @@ function getTheShot(coord, theFleet, boardn){
 function shotAtRandom (minr, maxr, minc, maxc) {
     var row = getRandomIntInclusive(minr, maxr);
     var col = getRandomIntInclusive(minc, maxc);
-    //var ind = 0;
     while (myFleet[row][col] >= 9) {    //already shooted at this location
         row = getRandomIntInclusive(minr, maxr);
         col = getRandomIntInclusive(minc, maxc);
-        //ind++;
     }
     return row.toString()+col.toString();
 }
 
 function aroundTheCell(row, col) {
     var direction = 0;
-/*  
-    console.log(myFleet);
-    console.log("around the cell: " + row + col);
-    console.log(">nor wes sou eas: " + nor + wes + sou + eas);
-    console.log("computerShot: " + computerShot);
-*/
+    console.log("nor: " + nor + " sou: " + sou + " wes: " + wes + " eas: " + eas + " row-col : " + row + "-" + col);
     if (nor != -1) {
         nor--;
         if (nor >= 0 && myFleet[nor][col] < 9) {
             direction = nor;
             if (myFleet[nor][col] == 0) {
-                nor = -1; wes = col;
+                if (row - nor > 1) {
+                    nor = -1; sou = row; // more than 1 as reached in this way so take the opposite way
+                }
+                else {
+                    nor = -1; wes = col;
+                }
             }
             return direction.toString() + col.toString();
         }
@@ -106,7 +105,12 @@ function aroundTheCell(row, col) {
         if (wes >= 0 && myFleet[row][wes] < 9) {
             direction = wes;
             if (myFleet[row][wes] == 0) {
-                wes = -1; sou = row;
+                if (col - wes > 1) {
+                    wes = -1; eas = col; // more than 1 as reached in this way so take the opposite way
+                }
+                else {
+                    wes = -1; sou = row;
+                }
             }
             return row.toString() + direction.toString();
         }
@@ -142,32 +146,19 @@ function aroundTheCell(row, col) {
             eas = -1;
         }
     }
-    
-    //console.log("<nor wes sou eas: " + nor + wes + sou + eas);
     return shotAtRandom(0, 9, 0, 9);
 }
 
 function computeTheShot() { //computer against my fleet
-    //previous shot analysis
-    if (computerShot != "**") {
-        var prow = parseInt(computerShot.substring(0, 1));
-        var pcol = parseInt(computerShot.substring(1, 2));
-        if (reached.indexOf(myFleet[prow][pcol]) != -1 && reachedShot == "**") {
-            reachedShot = computerShot;
-            nor = prow;
-        }
-    }
     if (reachedShot != "**") {
         var prow = parseInt(reachedShot.substring(0, 1));
         var pcol = parseInt(reachedShot.substring(1, 2));
         if (reached.indexOf(myFleet[prow][pcol]) != -1) {
-            //console.log("**** ship " + reachedShot + " is reached.");
             computerShot = aroundTheCell(prow, pcol);
             return computerShot;
         }
         if (sank.indexOf(myFleet[prow][pcol]) != -1) {
-            //console.log("**** ship " + reachedShot + " is sank.");
-            reachedShot = "**";
+            reachedShot = "**"; nor = sou = wes = eas = -1;
         }
     }
     computerShot = shotAtRandom(0, 9, 0, 9);
@@ -193,6 +184,13 @@ function clickOnBoard2(event) {
     getTheShot(td.substring(1), computerFleet, "2");
     // this is the turn for the computer to shoot
     getTheShot(computeTheShot(), myFleet, "1");
+    var prow = parseInt(computerShot.substring(0, 1));
+    var pcol = parseInt(computerShot.substring(1, 2));
+    if (reached.indexOf(myFleet[prow][pcol]) != -1 && reachedShot == "**") {
+        reachedShot = computerShot;
+        nor = prow;
+    }
+    console.log("computerShot: " + computerShot + " reachedShot: " + reachedShot);
 }
 
 $(document).ready(function () {
@@ -205,7 +203,6 @@ $(document).ready(function () {
     }
     myFleet = mylocalobj.myfleet;
     buildTheFleetAtRandom(computerFleet);
-    //console.log(">>>computerFleet: " + computerFleet);
 
     createGrid("1"); initGrid2("1", mylocalobj.myfleet);
     createGrid("2"); initGrid("2");
