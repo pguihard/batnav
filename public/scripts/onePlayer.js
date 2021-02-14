@@ -83,67 +83,104 @@ function aroundTheCell(row, col) {
     console.log("nor: " + nor + " sou: " + sou + " wes: " + wes + " eas: " + eas + " row-col : " + row + "-" + col);
     if (nor != -1) {
         nor--;
-        if (nor >= 0 && myFleet[nor][col] < 9) {
+        if (nor == -1 || myFleet[nor][col] >= 9) { //stop to go to this direction
+            if (row - nor > 1) {
+                sou = row; //take the opposite direction
+            }
+            else {
+                wes = col;
+            }
+            nor = -1;
+        }
+        else    //pursue into this direction
+        {
             direction = nor;
             if (myFleet[nor][col] == 0) {
                 if (row - nor > 1) {
-                    nor = -1; sou = row; // more than 1 as reached in this way so take the opposite way
+                    sou = row; // will take the opposite direction after this shot
                 }
                 else {
-                    nor = -1; wes = col;
+                    wes = col;
                 }
+                nor = -1;
             }
-            return direction.toString() + col.toString();
-        }
-        else {
-            nor = -1; wes = col;
+            return direction.toString() + col.toString();  
         }
     }
 
     if (wes != -1) {
         wes--;
-        if (wes >= 0 && myFleet[row][wes] < 9) {
+        if (wes == -1 || myFleet[row][wes] >= 9) { //stop to go to this direction
+            if (col - wes > 1) {
+                eas = col; //take the opposite direction
+            }
+            else {
+                sou = row;
+            }
+            wes = -1;
+        }
+        else    //pursue into this direction
+        {
             direction = wes;
-            if (myFleet[row][wes] == 0) {
+            if (myFleet[row][wes] == 0)
+            {
                 if (col - wes > 1) {
-                    wes = -1; eas = col; // more than 1 as reached in this way so take the opposite way
+                    eas = col; // will take the opposite direction after this shot
                 }
                 else {
-                    wes = -1; sou = row;
+                    sou = row;
                 }
+                wes = -1;
             }
-            return row.toString() + direction.toString();
-        }
-        else {
-            wes = -1; sou = row;
+            return row.toString() + direction.toString();  
         }
     }
-    
+
     if (sou != -1) {
         sou++;
-        if (sou <= 9 && myFleet[sou][col] < 9) {
+        if (sou == 10 || myFleet[sou][col] >= 9) { //stop to go to this direction
+            if (sou - row > 1) {
+                //nothing to do
+            }
+            else {
+                eas = col;
+            }
+            sou = -1;
+        }
+        else    //pursue into this direction
+        {
             direction = sou;
             if (myFleet[sou][col] == 0) {
-                sou = -1; eas = col;
+                if (sou - row > 1) {
+                    //nothing to do
+                }
+                else {
+                    eas = col;
+                }
+                sou = -1;
             }
-            return direction.toString()+col.toString();
-        }
-        else {
-            sou = -1; eas = col;
+            return direction.toString() + col.toString();  
         }
     }
 
     if (eas != -1) {
         eas++;
-        if (eas <= 9 && myFleet[row][eas] < 9) {
+        if (eas == -1 || myFleet[row][eas] >= 9) { //stop to go to this direction
+            if (eas - col > 1) {
+                // nothing to do
+            }
+            else {
+                // nothing to do
+            }
+            eas = -1;
+        }
+        else    //pursue into this direction
+        {
             direction = eas;
             if (myFleet[row][eas] == 0) {
                 eas = -1;
             }
-            return row.toString() + direction.toString();
-        }
-        else {
-            eas = -1;
+            return row.toString() + direction.toString();  
         }
     }
     return shotAtRandom(0, 9, 0, 9);

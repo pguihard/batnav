@@ -6,4 +6,6 @@
 label {
 	display: block;
 	background-color: bisque;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
