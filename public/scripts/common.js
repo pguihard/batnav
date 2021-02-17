@@ -15,7 +15,11 @@ var colorMissed = "#73B1B7";
 var colorReached = "#e78b8b";
 var colorSunk = "#f72929";
 
-var shipArea = [[5, "#8ca78d"], [4, "#71ad73"], [3, "#858f74"], [3, "#7d9b48"], [2, "#5c8b3c"]];
+var shipAreas = [[[5, "#8ca78d"], [4, "#71ad73"], [3, "#858f74"], [3, "#7d9b48"], [2, "#5c8b3c"]],
+                [[5, "#8ca78d"], [4, "#71ad73"], [3, "#858f74"], [3, "#7d9b48"], [2, "#5c8b3c"]]];
+
+var fleetLen = [0, 0];
+var nShots = [0, 0]; //number of shots                
 
 // called by atRandomFleet.js, buildTheFleet.js, client.js
 function createGrid(boardn){
@@ -50,7 +54,7 @@ function initGrid2(boardn, fleetArea){
 			if (fleetArea[row][col] == 0) {
 				document.getElementById(id).textContent = " ";
 			} else {
-				document.getElementById(id).style.backgroundColor = shipArea[ fleetArea[row][col] - 1 ][1];
+				document.getElementById(id).style.backgroundColor = shipAreas[boardn-1][ fleetArea[row][col] - 1 ][1];
 					document.getElementById(id).textContent = "X";
 			}
         }
@@ -82,7 +86,7 @@ function putOneShip (fleetArea, shipId) {
 	var row = 0;
 	var col = 0;
 	var collision = true;
-	var shipSize = shipArea[shipId-1][0];
+	var shipSize = shipAreas[0][shipId-1][0];
 
 	while(collision) {
 		if (collision) {
@@ -122,4 +126,62 @@ function buildTheFleetAtRandom(fleetArea) {
 	putOneShip (fleetArea, 3);
 	putOneShip (fleetArea, 4);
 	putOneShip (fleetArea, 5);
+}
+//called by the next getTheShot funtion
+function shipIsSunk (theFleet, ship_Id, boardn, sock) {
+    for (var row = 0; row < 10; row++) {
+        for (var col = 0; col < 10; col++) {
+            if (theFleet[row][col] == ship_Id) {
+                var id = boardn + row.toString() + col.toString();
+                document.getElementById(id).style.backgroundColor = colorSunk;
+                if (sock != null) 
+                {
+                    sock.send("S" + row.toString() + col.toString());
+                }
+                theFleet[row][col] += 1;
+            }
+        }
+    }
+}
+//called by client.js and onePlayer.js
+function getTheShot(coord, theFleet, boardn, sock){
+    var row = parseInt(coord.substring(0, 1));
+    var col = parseInt(coord.substring(1, 2));
+    document.getElementById(boardn + coord).innerText = "O";
+    document.getElementById(boardn + coord).style.borderRadius = "100%";
+    if (theFleet[row][col] == 0) {
+        //missed
+        theFleet[row][col] = 9;
+        document.getElementById(boardn + coord).style.backgroundColor = colorMissed;
+        if (sock != null) 
+        {
+            sock.send("M" + coord);
+        }
+    }
+    else if (theFleet[row][col] < 9) { //test if shot against a valid part of ship
+        fleetLen[boardn-1]--;
+        if (fleetLen[boardn-1] == 0) {
+            $("#alert").text(msg3 + ", Nombre de tirs: " + ++nShots[0]);
+        }
+
+        if (boardn == 2 && fleetLen[boardn-1] == 0) {   //called by OnePlayer only
+            $("#alert").text(msg4 + ", Nombre de tirs: " + ++nShots[1]);
+        }
+
+        if (--shipAreas[boardn-1][ theFleet[row][col] - 1][0] == 0) { //test the current length of the ship
+            //sunk
+            theFleet[row][col] *= 10;
+            shipIsSunk(theFleet, theFleet[row][col], boardn, sock);
+        }
+        else {
+            //just reached
+            document.getElementById(boardn + coord).style.backgroundColor = colorReached;
+            if (sock != null) 
+            {
+                sock.send("R" + coord);
+            }
+            theFleet[row][col] *= 10;
+        }
+    }
+        nShots[boardn-1]++;
 }

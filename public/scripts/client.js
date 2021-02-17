@@ -1,13 +1,10 @@
 //0: water, 1-5: ship Id, 9: missed, shipId x 10: reached, shipId x 10 + 1: sank
 var fleetArea = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]];
-var fleetLen = 0;
 var shotsNum = 0; //number of sunk ennemy ships
 
-var nShots = 0; //number of shots
-
 function clickOnBoard2(event, sock) {
-    if (fleetLen == 0 || shotsNum == 0) {
+    if (fleetLen[0] == 0 || shotsNum == 0) {
         return;
     }
     textClients = document.getElementById("clients").innerText;
@@ -26,50 +23,6 @@ function clickOnBoard2(event, sock) {
     document.getElementById(td).style.borderRadius = "100%";
 
     sock.send(td.substring(1));
-    nShots++;
-}
-
-function shipIsSunk (ship_Id, sock) {
-    for (var row = 0; row < 10; row++) {
-        for (var col = 0; col < 10; col++) {
-            if (fleetArea[row][col] == ship_Id) {
-                var id = "1" + row.toString() + col.toString();
-                document.getElementById(id).style.backgroundColor = colorSunk;
-                sock.send("S" + row.toString() + col.toString());
-                fleetArea[row][col] += 1;
-            }
-        }
-    }
-}
-
-function getTheShot(coord, sock){
-    var row = parseInt(coord.substring(0, 1));
-    var col = parseInt(coord.substring(1, 2));
-    document.getElementById("1" + coord).innerText = "O";
-    document.getElementById("1" + coord).style.borderRadius = "100%";
-    if (fleetArea[row][col] == 0) {
-        //missed
-        fleetArea[row][col] = 9;
-        document.getElementById("1" + coord).style.backgroundColor = colorMissed;
-        sock.send("M" + coord);
-    }
-    else if (fleetArea[row][col] < 9) { //test if shot against a valid part of ship
-        fleetLen--;
-        if (fleetLen == 0) {
-            $("#alert").text(msg3);
-        }
-        if (--shipArea[ fleetArea[row][col] - 1][0] == 0) { //test the current length of the ship
-            //sunk
-            fleetArea[row][col] *= 10;
-            shipIsSunk(fleetArea[row][col], sock);
-        }
-        else {
-            //just reached
-            document.getElementById("1" + coord).style.backgroundColor = colorReached;
-            sock.send("R" + coord);
-            fleetArea[row][col] *= 10;
-        }
-    }
 }
 
 function getTheResponse(msg) {
@@ -91,13 +44,11 @@ function getTheResponse(msg) {
             break;
     }
     if (shotsNum == 0) { //You have won
-        $("#alert").text(msg4);
+        $("#alert").text(msg4 + ",,, Nombre de tirs: " + nShots[0]);
     }
 }
 
-function comWithServer(){
-    var sock = io();
-    
+function comWithServer(sock){
     sock.on("message", function (data) {
         var obj = JSON.parse(data);
         if (obj.message == "disconnect"){
@@ -112,7 +63,7 @@ function comWithServer(){
             if (isNaN(obj.message.substring(0,1))) {
                 getTheResponse(obj.message);
             } else {
-                getTheShot(obj.message, sock);
+                getTheShot(obj.message, fleetArea, "1", sock);
             }
         }
         else { // sent by server every seconds
@@ -120,7 +71,7 @@ function comWithServer(){
             $("#clients").text(obj.clients);
             alert = document.getElementById("alert").innerText;
             if (obj.clients == "1 players"){
-                if (nShots == 0){
+                if (nShots[0] == 0){
                     $("#alert").text(msg1);
                     
                 } else {
@@ -141,15 +92,17 @@ $(document).ready(function () {
     var myobjet_json = localStorage.getItem("mylocalobj");
 	var mylocalobj = JSON.parse(myobjet_json);
 
-    for(var ind = 0; ind < shipArea.length; ind++) {
-        fleetLen += shipArea[ind][0];
-        shotsNum = fleetLen;
+    for(var ind = 0; ind < shipAreas[0].length; ind++) {
+        fleetLen[0] += shipAreas[0][ind][0];1
     }
+    shotsNum = fleetLen[0];
     fleetArea = mylocalobj.myfleet;
     createGrid("1"); initGrid2("1", mylocalobj.myfleet);
     createGrid("2"); initGrid("2");
+    var sock = io();
+    comWithServer(sock);
+
     document.getElementById("board2").addEventListener("click", function(event) {
         clickOnBoard2(event, sock);
       });
-    comWithServer();
 });

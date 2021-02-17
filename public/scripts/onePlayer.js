@@ -6,10 +6,6 @@ var myFleet = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]
 var computerFleet = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]];
     
-var fleetLen = [0, 0];
-var shipAreas = [[[5, "#8ca78d"], [4, "#71ad73"], [3, "#858f74"], [3, "#7d9b48"], [2, "#5c8b3c"]],
-                [[5, "#8ca78d"], [4, "#71ad73"], [3, "#858f74"], [3, "#7d9b48"], [2, "#5c8b3c"]]];
-               
 var computerShot = "**";
 var reachedShot = "**";
 var nor = -1;
@@ -21,51 +17,15 @@ var aShip = [1, 2, 3, 4, 5];
 var reached = [10, 20, 30, 40, 50];
 var sank = [11, 21, 31, 41, 51];
 
-function shipIsSunk (theFleet, ship_Id, boardn) {
+function reachedRemaining () {
     for (var row = 0; row < 10; row++) {
         for (var col = 0; col < 10; col++) {
-            if (theFleet[row][col] == ship_Id) {
-                var id = boardn + row.toString() + col.toString();
-                document.getElementById(id).style.backgroundColor = colorSunk;
-                //sock.send("S" + row.toString() + col.toString());
-                theFleet[row][col] += 1;
+            if (reached.indexOf(myFleet[row][col]) != -1) {
+                return row.toString() + col.toString();
             }
         }
     }
-}
-
-function getTheShot(coord, theFleet, boardn){
-    var row = parseInt(coord.substring(0, 1));
-    var col = parseInt(coord.substring(1, 2));
-    document.getElementById(boardn + coord).innerText = "O";
-    document.getElementById(boardn + coord).style.borderRadius = "100%";
-    if (theFleet[row][col] == 0) {
-        //missed
-        theFleet[row][col] = 9;
-        document.getElementById(boardn + coord).style.backgroundColor = colorMissed;
-        //sock.send("M" + coord);
-    }
-    else if (theFleet[row][col] < 9) { //test if shot against a valid part of ship
-        fleetLen[boardn-1]--;
-        if (fleetLen[0] == 0) {
-            $("#alert").text(msg3);
-        }
-        if (fleetLen[1] == 0) {
-            $("#alert").text(msg4);
-        }
-
-        if (--shipAreas[boardn-1][ theFleet[row][col] - 1][0] == 0) { //test the current length of the ship
-            //sunk
-            theFleet[row][col] *= 10;
-            shipIsSunk(theFleet, theFleet[row][col], boardn);
-        }
-        else {
-            //just reached
-            document.getElementById(boardn + coord).style.backgroundColor = colorReached;
-            //sock.send("R" + coord);
-            theFleet[row][col] *= 10;
-        }
-    }
+    return "**";
 }
 
 function shotAtRandom (minr, maxr, minc, maxc) {
@@ -80,7 +40,6 @@ function shotAtRandom (minr, maxr, minc, maxc) {
 
 function aroundTheCell(row, col) {
     var direction = 0;
-    console.log("nor: " + nor + " sou: " + sou + " wes: " + wes + " eas: " + eas + " row-col : " + row + "-" + col);
     if (nor != -1) {
         nor--;
         if (nor == -1 || myFleet[nor][col] >= 9) { //stop to go to this direction
@@ -103,6 +62,12 @@ function aroundTheCell(row, col) {
                     wes = col;
                 }
                 nor = -1;
+            }
+            else {
+                if (myFleet[nor][col] * 10 != myFleet[row][col]) {
+                    // another ship, change the direction, this is an advantage for the computer
+                    nor = -1; wes = col;
+                }
             }
             return direction.toString() + col.toString();  
         }
@@ -132,6 +97,12 @@ function aroundTheCell(row, col) {
                 }
                 wes = -1;
             }
+            else {
+                if (myFleet[row][wes] * 10 != myFleet[row][col]) {
+                    // another ship, change the direction, this is an advantage for the computer
+                    wes = -1; sou = row;
+                }
+            }
             return row.toString() + direction.toString();  
         }
     }
@@ -159,6 +130,12 @@ function aroundTheCell(row, col) {
                 }
                 sou = -1;
             }
+            else {
+                if (myFleet[sou][col] * 10 != myFleet[row][col]) {
+                    // another ship, change the direction, this is an advantage for the computer
+                    sou = -1; eas = col;
+                }
+            }
             return direction.toString() + col.toString();  
         }
     }
@@ -180,6 +157,12 @@ function aroundTheCell(row, col) {
             if (myFleet[row][eas] == 0) {
                 eas = -1;
             }
+            else {
+                if (myFleet[row][eas] * 10 != myFleet[row][col]) {
+                    // another ship, change the direction, this is an advantage for the computer
+                    eas = -1;
+                }
+            }
             return row.toString() + direction.toString();  
         }
     }
@@ -187,7 +170,7 @@ function aroundTheCell(row, col) {
 }
 
 function computeTheShot() { //computer against my fleet
-    if (reachedShot != "**") {
+    while (reachedShot != "**") {
         var prow = parseInt(reachedShot.substring(0, 1));
         var pcol = parseInt(reachedShot.substring(1, 2));
         if (reached.indexOf(myFleet[prow][pcol]) != -1) {
@@ -195,7 +178,11 @@ function computeTheShot() { //computer against my fleet
             return computerShot;
         }
         if (sank.indexOf(myFleet[prow][pcol]) != -1) {
-            reachedShot = "**"; nor = sou = wes = eas = -1;
+            nor = sou = wes = eas = -1;
+            reachedShot = reachedRemaining();
+            if (reachedShot != "**") {
+                nor = prow;
+            }
         }
     }
     computerShot = shotAtRandom(0, 9, 0, 9);
@@ -218,16 +205,15 @@ function clickOnBoard2(event) {
     document.getElementById(td).style.borderRadius = "100%";
 
     //    sock.send(td.substring(1));
-    getTheShot(td.substring(1), computerFleet, "2");
+    getTheShot(td.substring(1), computerFleet, "2", null);
     // this is the turn for the computer to shoot
-    getTheShot(computeTheShot(), myFleet, "1");
+    getTheShot(computeTheShot(), myFleet, "1", null);
     var prow = parseInt(computerShot.substring(0, 1));
     var pcol = parseInt(computerShot.substring(1, 2));
     if (reached.indexOf(myFleet[prow][pcol]) != -1 && reachedShot == "**") {
         reachedShot = computerShot;
         nor = prow;
     }
-    console.log("computerShot: " + computerShot + " reachedShot: " + reachedShot);
 }
 
 $(document).ready(function () {
