@@ -15,9 +15,10 @@ var shipId = 0; // 1-5
 
 var colorMissed = "#73B1B7";
 var colorReached = "#e78b8b";
-var colorSunk = "#f72929";
+//var colorSunk = "#f72929";
+var colorsSunk = ["#ff0000", "#cc0000", "#990000", "#660000", "#ffff00"];
 
-//0: water, 1-5: ship Id, 9: missed, shipId x 10: reached, shipId x 10 + 1: sank
+//0: water, 1-5: ship Id, 9: missed, shipId x 10: reached, shipId x 10 + 1: sunk
 var myFleet = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]];
 
@@ -139,10 +140,10 @@ function shipIsSunk (theFleet, ship_Id, boardn, sock) {
         for (var col = 0; col < 10; col++) {
             if (theFleet[row][col] == ship_Id) {
                 var id = boardn + row.toString() + col.toString();
-                document.getElementById(id).style.backgroundColor = colorSunk;
+                document.getElementById(id).style.backgroundColor = colorsSunk[ship_Id / 10 - 1];
                 if (sock != null) 
                 {
-                    sock.send("S" + row.toString() + col.toString());
+                    sock.send("S" + (ship_Id / 10 - 1).toString() + row.toString() + col.toString());
                 }
                 theFleet[row][col] += 1;
             }
@@ -167,10 +168,10 @@ function getTheShot(coord, theFleet, boardn, sock){
     else if (theFleet[row][col] < 9) { //test if shot against a valid part of ship
         fleetLen[boardn-1]--;
         if (fleetLen[boardn-1] == 0) {
-            $("#alert").text(msg3 + ", Nombre de tirs adverses: " + ++nShots[0]);
+            $("#alert").text(msg3 + ", Nombre de tirs subis: " + ++nShots[0]);
         }
 
-        if (boardn == 2 && fleetLen[boardn-1] == 0) {   //called by OnePlayer only
+        if (boardn == 2 && fleetLen[boardn-1] == 0) {   //called by onePlayer only
             $("#alert").text(msg4 + ", Nombre de vos tirs: " + ++nShots[1]);
         }
 

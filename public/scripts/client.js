@@ -4,6 +4,7 @@ var shotsNum = 0; //number of sunk ennemy ships
 
 function getTheResponse(msg) {
     var coord = msg.substring(1);
+    var id = 0;
     var alert = document.getElementById("alert").innerText;
     switch (msg.substring(0,1)) {
         case "M":
@@ -15,7 +16,12 @@ function getTheResponse(msg) {
             $("#alert").text(msg21 + msg2);
             break;
         case "S":
-            document.getElementById("2" + coord).style.backgroundColor = colorSunk;
+            id = parseInt(msg.substring(1,2));
+            console.log(">>> " + msg.substring(1,2));
+            console.log("### id: " + id);
+
+            coord = msg.substring(2);
+            document.getElementById("2" + coord).style.backgroundColor = colorsSunk[id];
             $("#alert").text(msg22 + msg2);
             shotsNum--;
             break;
