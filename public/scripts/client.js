@@ -1,29 +1,6 @@
-//0: water, 1-5: ship Id, 9: missed, shipId x 10: reached, shipId x 10 + 1: sank
-var fleetArea = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]];
+// This part communicates with the server when you play against another player online
+
 var shotsNum = 0; //number of sunk ennemy ships
-
-function clickOnBoard2(event, sock) {
-    if (fleetLen[0] == 0 || shotsNum == 0) {
-        return;
-    }
-    textClients = document.getElementById("clients").innerText;
-    if(textClients == "1 players" ){
-        return;
-    }
-    alert = document.getElementById("alert").innerText;
-    if(alert.substring(0, 1) == ">" ){
-        return;
-    }
-    td = event.target.id;
-    if (td == "" || td.substring(0, 5) == "board"){
-        return;
-    }
-    document.getElementById(td).innerText = "O";
-    document.getElementById(td).style.borderRadius = "100%";
-
-    sock.send(td.substring(1));
-}
 
 function getTheResponse(msg) {
     var coord = msg.substring(1);
@@ -44,7 +21,7 @@ function getTheResponse(msg) {
             break;
     }
     if (shotsNum == 0) { //You have won
-        $("#alert").text(msg4 + ",,, Nombre de tirs: " + nShots[0]);
+        $("#alert").text(msg4 + ", Nombre de vos tirs: " + ++nShots[0]);
     }
 }
 
@@ -63,7 +40,7 @@ function comWithServer(sock){
             if (isNaN(obj.message.substring(0,1))) {
                 getTheResponse(obj.message);
             } else {
-                getTheShot(obj.message, fleetArea, "1", sock);
+                getTheShot(obj.message, myFleet, "1", sock);
             }
         }
         else { // sent by server every seconds
@@ -88,6 +65,28 @@ function comWithServer(sock){
     sock.connect();
 }
 
+function clickOnBoard2(event, sock) {
+    if (fleetLen[0] == 0 || shotsNum == 0) {
+        return;
+    }
+    textClients = document.getElementById("clients").innerText;
+    if(textClients == "1 players" ){
+        return;
+    }
+    alert = document.getElementById("alert").innerText;
+    if(alert.substring(0, 1) == ">" ){
+        return;
+    }
+    td = event.target.id;
+    if (td == "" || td.substring(0, 5) == "board"){
+        return;
+    }
+    document.getElementById(td).innerText = "O";
+    document.getElementById(td).style.borderRadius = "100%";
+
+    sock.send(td.substring(1));
+}
+
 $(document).ready(function () {
     var myobjet_json = localStorage.getItem("mylocalobj");
 	var mylocalobj = JSON.parse(myobjet_json);
@@ -96,7 +95,7 @@ $(document).ready(function () {
         fleetLen[0] += shipAreas[0][ind][0];1
     }
     shotsNum = fleetLen[0];
-    fleetArea = mylocalobj.myfleet;
+    myFleet = mylocalobj.myfleet;
     createGrid("1"); initGrid2("1", mylocalobj.myfleet);
     createGrid("2"); initGrid("2");
     var sock = io();

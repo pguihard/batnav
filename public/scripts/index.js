@@ -1,8 +1,8 @@
+// This is the first script involved dispatching towards the involved working scripts
+
 $(document).ready(function() {
 	$(".start").on("click", function() {
-		var fleetArea = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
-						[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]];
-		var mylocalobj = {players : 0, myfleet : fleetArea};
+		var mylocalobj = {players : 0, myfleet : myFleet};
 		
 		if (twoPlayers.checked) {
 			mylocalobj.players = 2;	

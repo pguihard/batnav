@@ -1,3 +1,4 @@
+// This part builds your fleet at random
 
 function resetBoard1() {
     for (var row = 0; row < 10; row++) {
@@ -16,14 +17,14 @@ $(document).ready(function() {
 	var myobjet_json = localStorage.getItem("mylocalobj");
 	var mylocalobj = JSON.parse(myobjet_json);
 
-	var fleetArea = mylocalobj.myfleet;
+	var myFleet = mylocalobj.myfleet;
 
 	createGrid("1");
 
 	$(".generate").on("click", function() {
 		resetBoard1();
-		buildTheFleetAtRandom(fleetArea);
-		initGrid2("1", fleetArea);
+		buildTheFleetAtRandom(myFleet);
+		initGrid2("1", myFleet);
 		$("#alert").text("");
 		playing.style.display = "initial";
 	});
@@ -34,13 +35,13 @@ $(document).ready(function() {
 
 	$(".play").on("click", function() {
 		if (mylocalobj.players == 1) {
-			mylocalobj.myfleet = fleetArea;
+			mylocalobj.myfleet = myFleet;
 			myobjet_json = JSON.stringify(mylocalobj);
 			localStorage.setItem("mylocalobj",myobjet_json);
 			window.location.replace("../pages/onePlayer.html");
 		}
 		if (mylocalobj.players == 2) {
-			mylocalobj.myfleet = fleetArea;
+			mylocalobj.myfleet = myFleet;
 			myobjet_json = JSON.stringify(mylocalobj);
 			localStorage.setItem("mylocalobj",myobjet_json);
 			window.location.replace("../pages/client.html");

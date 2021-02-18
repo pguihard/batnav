@@ -1,3 +1,5 @@
+// common data and functions called by other scripts
+
 var msg030 = "Vous pouvez jouer.";
 
 var msg1 = "Votre adversaire n'est pas prêt à jouer.";
@@ -14,6 +16,10 @@ var shipId = 0; // 1-5
 var colorMissed = "#73B1B7";
 var colorReached = "#e78b8b";
 var colorSunk = "#f72929";
+
+//0: water, 1-5: ship Id, 9: missed, shipId x 10: reached, shipId x 10 + 1: sank
+var myFleet = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]];
 
 var shipAreas = [[[5, "#8ca78d"], [4, "#71ad73"], [3, "#858f74"], [3, "#7d9b48"], [2, "#5c8b3c"]],
                 [[5, "#8ca78d"], [4, "#71ad73"], [3, "#858f74"], [3, "#7d9b48"], [2, "#5c8b3c"]]];
@@ -161,11 +167,11 @@ function getTheShot(coord, theFleet, boardn, sock){
     else if (theFleet[row][col] < 9) { //test if shot against a valid part of ship
         fleetLen[boardn-1]--;
         if (fleetLen[boardn-1] == 0) {
-            $("#alert").text(msg3 + ", Nombre de tirs: " + ++nShots[0]);
+            $("#alert").text(msg3 + ", Nombre de tirs adverses: " + ++nShots[0]);
         }
 
         if (boardn == 2 && fleetLen[boardn-1] == 0) {   //called by OnePlayer only
-            $("#alert").text(msg4 + ", Nombre de tirs: " + ++nShots[1]);
+            $("#alert").text(msg4 + ", Nombre de vos tirs: " + ++nShots[1]);
         }
 
         if (--shipAreas[boardn-1][ theFleet[row][col] - 1][0] == 0) { //test the current length of the ship
