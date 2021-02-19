@@ -17,9 +17,6 @@ function getTheResponse(msg) {
             break;
         case "S":
             id = parseInt(msg.substring(1,2));
-            console.log(">>> " + msg.substring(1,2));
-            console.log("### id: " + id);
-
             coord = msg.substring(2);
             document.getElementById("2" + coord).style.backgroundColor = colorsSunk[id];
             $("#alert").text(msg22 + msg2);
@@ -27,7 +24,7 @@ function getTheResponse(msg) {
             break;
     }
     if (shotsNum == 0) { //You have won
-        $("#alert").text(msg4 + " Nombre de vos tirs: " + ++nShots[0]);
+        $("#alert").text(msg4 + " Nombre de tirs subis: " + nShots[0]);
     }
 }
 
