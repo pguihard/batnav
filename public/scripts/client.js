@@ -27,7 +27,7 @@ function getTheResponse(msg) {
             break;
     }
     if (shotsNum == 0) { //You have won
-        $("#alert").text(msg4 + ", Nombre de vos tirs: " + ++nShots[0]);
+        $("#alert").text(msg4 + " Nombre de vos tirs: " + ++nShots[0]);
     }
 }
 
@@ -63,9 +63,11 @@ function comWithServer(sock){
                 $("#message").text("");
                 initGrid("2");
             }
-            else if (alert == msg1){
-                $("#alert").text(msg030);
-            }
+            else 
+                if (alert == msg1 || alert == "")
+                {
+                    $("#alert").text(msg030);
+                }
         }
     });
     sock.connect();

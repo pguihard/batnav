@@ -168,11 +168,11 @@ function getTheShot(coord, theFleet, boardn, sock){
     else if (theFleet[row][col] < 9) { //test if shot against a valid part of ship
         fleetLen[boardn-1]--;
         if (fleetLen[boardn-1] == 0) {
-            $("#alert").text(msg3 + ", Nombre de tirs subis: " + ++nShots[0]);
+            $("#alert").text(msg3 + " Nombre de tirs subis: " + ++nShots[0]);
         }
 
         if (boardn == 2 && fleetLen[boardn-1] == 0) {   //called by onePlayer only
-            $("#alert").text(msg4 + ", Nombre de vos tirs: " + ++nShots[1]);
+            $("#alert").text(msg4 + " Nombre de vos tirs: " + ++nShots[1]);
         }
 
         if (--shipAreas[boardn-1][ theFleet[row][col] - 1][0] == 0) { //test the current length of the ship
