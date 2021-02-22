@@ -24,4 +24,4 @@ $(document).ready(function() {
 		myobjet_json = JSON.stringify(mylocalobj);
 		localStorage.setItem("mylocalobj",myobjet_json);
 	});
-})
+});

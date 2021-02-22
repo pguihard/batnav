@@ -97,7 +97,7 @@ $(document).ready(function () {
 	var mylocalobj = JSON.parse(myobjet_json);
 
     for(var ind = 0; ind < shipAreas[0].length; ind++) {
-        fleetLen[0] += shipAreas[0][ind][0];1
+        fleetLen[0] += shipAreas[0][ind][0];
     }
     shotsNum = fleetLen[0];
     myFleet = mylocalobj.myfleet;

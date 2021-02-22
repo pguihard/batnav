@@ -10,7 +10,7 @@ function resetBoard1() {
             }
         }
     }
-};
+}
 
 $(document).ready(function() {
 	playing.style.display = "none";
@@ -47,4 +47,4 @@ $(document).ready(function() {
 			window.location.replace("../pages/client.html");
 		}
 	});
-})
+});

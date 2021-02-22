@@ -21,7 +21,7 @@ function validateShip() {
         }
     }
     return validated;
-};
+}
 
 function clickOnBoard1(event) {
     if(shipId == shipAreas[0].length) {
@@ -33,6 +33,7 @@ function clickOnBoard1(event) {
     if (td == "" || td.substring(0, 5) == "board"){
         return;
     }
+    var newval = 0;
     if (south.checked && parseInt(td.substring(1,2)) + shipSize <= 10) {
         while (shipSize > 0) {
             if (document.getElementById(td).textContent != " "){
@@ -41,7 +42,7 @@ function clickOnBoard1(event) {
             }
             document.getElementById(td).textContent = "x";
             document.getElementById(td).style.backgroundColor = shipAreas[0][shipId][1];
-            var newval = parseInt(td.substring(1,2)) + 1;
+            newval = parseInt(td.substring(1,2)) + 1;
             td = td.substring(0,1) + newval.toString() + td.substring(2,3);
             shipSize--;
         }
@@ -55,7 +56,7 @@ function clickOnBoard1(event) {
             }
             document.getElementById(td).textContent = "x";
             document.getElementById(td).style.backgroundColor = shipAreas[0][shipId][1];
-            var newval = parseInt(td.substring(1,2)) - 1;
+            newval = parseInt(td.substring(1,2)) - 1;
             td = td.substring(0,1) + newval.toString() + td.substring(2,3);
             shipSize--;
         }
@@ -69,7 +70,7 @@ function clickOnBoard1(event) {
             }
             document.getElementById(td).textContent = "x";
             document.getElementById(td).style.backgroundColor = shipAreas[0][shipId][1];
-            var newval = parseInt(td.substring(2,3)) + 1;
+            newval = parseInt(td.substring(2,3)) + 1;
             td = td.substring(0,1) + td.substring(1,2) + newval.toString();
             shipSize--;
         }
@@ -83,7 +84,7 @@ function clickOnBoard1(event) {
             }
             document.getElementById(td).textContent = "x";
             document.getElementById(td).style.backgroundColor = shipAreas[0][shipId][1];
-            var newval = parseInt(td.substring(2,3)) - 1;
+            newval = parseInt(td.substring(2,3)) - 1;
             td = td.substring(0,1) + td.substring(1,2) + newval.toString();
             shipSize--;
         }
@@ -109,7 +110,7 @@ function validate(){
         }
         $("#alert").text(msg01  + shipAreas[0][shipId][0] + msg02);
     }
-};
+}
 
 // When many tries to set one ship
 // "x"s are temporary and changed to "X" when valisating
@@ -123,7 +124,7 @@ function resetBoard1() {
             }
         }
     }
-};
+}
 
 $(document).ready(function () {
     playing.style.display = "none";

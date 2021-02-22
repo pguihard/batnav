@@ -8,8 +8,8 @@ var msg2 = "A votre adversaire de jouer.";
 var msg20 = "> Manqué. ";
 var msg21 = "> Touché. ";
 var msg22 = "> Coulé. ";
-var msg3 = "Vous avez perdu!"
-var msg4 = "Vous avez gagné!"
+var msg3 = "Vous avez perdu!";
+var msg4 = "Vous avez gagné!";
 
 var shipId = 0; // 1-5
 
@@ -40,7 +40,7 @@ function createGrid(boardn){
     }
     tableString += "</table>";
     document.getElementById("board"+boardn).innerHTML += tableString;
-};
+}
 
 // called by buildTheFleet.js, client.js
 function initGrid(boardn){
@@ -50,7 +50,7 @@ function initGrid(boardn){
         document.getElementById(id).textContent = " ";
         }
     }
-};
+}
 
 // called by atRandomFleet.js, client.js
 function initGrid2(boardn, fleetArea){
@@ -66,7 +66,7 @@ function initGrid2(boardn, fleetArea){
 			}
         }
     }
-};
+}
 
 // return an interger at random between a min value (included)
 // and a max value (included).
@@ -94,6 +94,7 @@ function putOneShip (fleetArea, shipId) {
 	var col = 0;
 	var collision = true;
 	var shipSize = shipAreas[0][shipId-1][0];
+    var ind = 0;
 
 	while(collision) {
 		if (collision) {
@@ -104,7 +105,7 @@ function putOneShip (fleetArea, shipId) {
 			case 0:	//North
 				row = getRandomIntInclusive(shipSize-1, 9);
 				col = getRandomIntInclusive(0, 9);
-				for(var ind = 0; ind < shipSize; ind++) {
+				for(ind = 0; ind < shipSize; ind++) {
 					if (fleetArea[row - ind][col] != 0) {
 						collision = true;
 					}
@@ -116,7 +117,7 @@ function putOneShip (fleetArea, shipId) {
 			case 1:	//South
 				row = getRandomIntInclusive(0, 9);
 				col = getRandomIntInclusive(0, 10-shipSize);
-				for(var ind = 0; ind < shipSize; ind++) {
+				for(ind = 0; ind < shipSize; ind++) {
 					if (fleetArea[row][col + ind] != 0) {
 						collision = true;
 					} else {
@@ -168,11 +169,13 @@ function getTheShot(coord, theFleet, boardn, sock){
     else if (theFleet[row][col] < 9) { //test if shot against a valid part of ship
         fleetLen[boardn-1]--;
         if (fleetLen[boardn-1] == 0) {
-            $("#alert").text(msg3 + " Nombre de tirs subis: " + ++nShots[0]);
+            ++nShots[0];
+            $("#alert").text(msg3 + " Nombre de tirs subis: " + nShots[0]);
         }
 
         if (boardn == 2 && fleetLen[boardn-1] == 0) {   //called by onePlayer only
-            $("#alert").text(msg4 + " Nombre de vos tirs: " + ++nShots[1]);
+            ++nShots[1];
+            $("#alert").text(msg4 + " Nombre de vos tirs: " + nShots[1]);
         }
 
         if (--shipAreas[boardn-1][ theFleet[row][col] - 1][0] == 0) { //test the current length of the ship
