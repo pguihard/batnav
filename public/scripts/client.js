@@ -106,7 +106,7 @@ $(document).ready(function () {
     var sock = io();
     comWithServer(sock);
 
-    document.getElementById("board2").addEventListener("click", function(event) {
-        clickOnBoard2(event, sock);
-      });
+    $("#board2").on("click", function(event) {
+       clickOnBoard2(event, sock);
+   });
 });

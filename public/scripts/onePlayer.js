@@ -227,7 +227,8 @@ $(document).ready(function () {
     createGrid("1"); initGrid2("1", mylocalobj.myfleet);
     createGrid("2"); initGrid("2");
     $("#alert").text(msg030);
-    document.getElementById("board2").addEventListener("click", function(event) {
+    
+    $("#board2").on("click", function(event) {
         clickOnBoard2(event);
-      });
+    });
 });

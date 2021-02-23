@@ -134,9 +134,11 @@ $(document).ready(function () {
     createGrid("1"); initGrid("1");
 
     $("#alert").text(msg01  + shipAreas[0][shipId][0] + msg02);
-    document.getElementById("board1").addEventListener("click", function(event) {
+
+    $("#board1").on("click", function(event) {
         clickOnBoard1(event);
     });
+    
     $(".validate").on("click", function() {
 		validate();
 	});
