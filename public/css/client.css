@@ -6,9 +6,3 @@
 	border: 1px solid #f72929;
 	background-color: #64c2d3;
 }
-
-#board2 > table {
-	border: 1px solid #23f010;
-	background-image: url("../images/radar.gif");
-	background-position: center;
-}

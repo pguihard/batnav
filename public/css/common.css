@@ -8,6 +8,12 @@
 	background-image: url("../images/sea.gif");
 }
 
+#board2 > table {
+	border: 1px solid #23f010;
+	background-image: url("../images/radar.gif");
+	background-position: center;
+}
+
 .buttons {
 	width: 150px;
 
