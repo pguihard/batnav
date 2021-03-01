@@ -114,7 +114,7 @@ function putOneShip (fleetArea, shipId) {
 					}
 				}
 				break;
-			case 1:	//South
+			case 1:	//East
 				row = getRandomIntInclusive(0, 9);
 				col = getRandomIntInclusive(0, 10-shipSize);
 				for(ind = 0; ind < shipSize; ind++) {
