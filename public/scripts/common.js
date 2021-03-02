@@ -15,7 +15,6 @@ var shipId = 0; // 1-5
 
 var colorMissed = "#73B1B7";
 var colorReached = "#e78b8b";
-//var colorSunk = "#f72929";
 var colorsSunk = ["#ff0000", "#cc0000", "#990000", "#660000", "#ffff00"];
 
 //0: water, 1-5: ship Id, 9: missed, shipId x 10: reached, shipId x 10 + 1: sunk
@@ -68,7 +67,7 @@ function initGrid2(boardn, fleetArea){
     }
 }
 
-// return an interger at random between a min value (included)
+// return an integer at random between a min value (included)
 // and a max value (included).
 function getRandomIntInclusive(min, max) {
 	min = Math.ceil(min);
