@@ -8,7 +8,7 @@ var shipId = 0; // 1-5
 
 //validate one ship converting temporary "x"s to "X"s.
 function validateShip() {
-    validated = false;
+    var validated = false;
     for (var row = 0; row < 10; row++) {
         for (var col = 0; col < 10; col++) {
             var id = "1" + row.toString() + col.toString();

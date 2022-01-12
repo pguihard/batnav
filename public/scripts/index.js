@@ -10,7 +10,7 @@ $(document).ready(function() {
 		if (onePlayer.checked) {
 			mylocalobj.players = 1;	
 		}
-		myobjet_json = JSON.stringify(mylocalobj);
+		var myobjet_json = JSON.stringify(mylocalobj);
 		localStorage.setItem("mylocalobj",myobjet_json);
 		
 		if (buildTheFleet.checked) {

@@ -140,12 +140,6 @@ function aroundTheCell(row, col) {
     if (eas != -1) {
         eas++;
         if (eas == -1 || myFleet[row][eas] >= 9) { //stop to go to this direction
-            if (eas - col > 1) {
-                // nothing to do
-            }
-            else {
-                // nothing to do
-            }
             eas = -1;
         }
         else    //pursue into this direction
@@ -194,14 +188,13 @@ function clickOnBoard2(event) {
     if(alert.substring(0, 1) == ">" ){
         return;
     }
-    td = event.target.id;
+    var td = event.target.id;
     if (td == "" || td.substring(0, 5) == "board"){
         return;
     }
     document.getElementById(td).innerText = "O";
     document.getElementById(td).style.borderRadius = "100%";
 
-    //    sock.send(td.substring(1));
     getTheShot(td.substring(1), computerFleet, "2", null);
     // this is the turn for the computer to shoot
     getTheShot(computeTheShot(), myFleet, "1", null);
@@ -221,7 +214,6 @@ $(document).ready(function () {
         fleetLen[0] += shipAreas[0][ind][0];
         fleetLen[1] += shipAreas[1][ind][0];
     }
-    myFleet = mylocalobj.myfleet;
     buildTheFleetAtRandom(computerFleet);
 
     createGrid("1"); initGrid2("1", mylocalobj.myfleet);

@@ -5,7 +5,6 @@ var shotsNum = 0; //number of sunk ennemy ships
 function getTheResponse(msg) {
     var coord = msg.substring(1);
     var id = 0;
-    var alert = document.getElementById("alert").innerText;
     switch (msg.substring(0,1)) {
         case "M":
             document.getElementById("2" + coord).style.backgroundColor = colorMissed;
@@ -74,7 +73,7 @@ function clickOnBoard2(event, sock) {
     if (fleetLen[0] == 0 || shotsNum == 0) {
         return;
     }
-    textClients = document.getElementById("clients").innerText;
+    var textClients = document.getElementById("clients").innerText;
     if(textClients == "1 players" ){
         return;
     }
@@ -82,7 +81,7 @@ function clickOnBoard2(event, sock) {
     if(alert.substring(0, 1) == ">" ){
         return;
     }
-    td = event.target.id;
+    var td = event.target.id;
     if (td == "" || td.substring(0, 5) == "board"){
         return;
     }
@@ -100,7 +99,6 @@ $(document).ready(function () {
         fleetLen[0] += shipAreas[0][ind][0];
     }
     shotsNum = fleetLen[0];
-    myFleet = mylocalobj.myfleet;
     createGrid("1"); initGrid2("1", mylocalobj.myfleet);
     createGrid("2"); initGrid("2");
     var sock = io();

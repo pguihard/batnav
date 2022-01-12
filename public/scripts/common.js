@@ -75,29 +75,29 @@ function getRandomIntInclusive(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  function resetFleet(shipId, fleetArea) {
+  function resetFleet(sId, fleetArea) {
 	for (var row = 0; row < 10; row++) {
         for (var col = 0; col < 10; col++) {
-            if (fleetArea[row][col] == shipId) {
+            if (fleetArea[row][col] == sId) {
 				fleetArea[row][col] = 0;
 			}
         }
     }
   }
 
-function putOneShip (fleetArea, shipId) {
+function putOneShip (fleetArea, sId) {
 	
 	var direction = getRandomIntInclusive(0, 1); //0:North, 1:South, 2:East, 3:West
 	
 	var row = 0;
 	var col = 0;
 	var collision = true;
-	var shipSize = shipAreas[0][shipId-1][0];
+	var shipSize = shipAreas[0][sId-1][0];
     var ind = 0;
 
 	while(collision) {
 		if (collision) {
-			resetFleet(shipId, fleetArea);
+			resetFleet(sId, fleetArea);
 		}
 		collision = false;
 		switch (direction) {
@@ -109,7 +109,7 @@ function putOneShip (fleetArea, shipId) {
 						collision = true;
 					}
 					else {
-						fleetArea[row - ind][col] = shipId;
+						fleetArea[row - ind][col] = sId;
 					}
 				}
 				break;
@@ -120,7 +120,7 @@ function putOneShip (fleetArea, shipId) {
 					if (fleetArea[row][col + ind] != 0) {
 						collision = true;
 					} else {
-						fleetArea[row][col + ind] = shipId;
+						fleetArea[row][col + ind] = sId;
 					}
 				}
 				break;
