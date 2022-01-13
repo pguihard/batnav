@@ -1,6 +1,6 @@
 // This is the first script involved dispatching towards the involved working scripts
 
-$(document).ready(function() {
+$(function() {
 	$(".start").on("click", function() {
 		var mylocalobj = {players : 0, myfleet : myFleet};
 		

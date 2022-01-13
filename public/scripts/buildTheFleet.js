@@ -126,7 +126,7 @@ function resetBoard1() {
     }
 }
 
-$(document).ready(function () {
+$(function () {
     playing.style.display = "none";
     var myobjet_json = localStorage.getItem("mylocalobj");
 	var mylocalobj = JSON.parse(myobjet_json);

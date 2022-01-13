@@ -206,7 +206,7 @@ function clickOnBoard2(event) {
     }
 }
 
-$(document).ready(function () {
+$(function () {
     var myobjet_json = localStorage.getItem("mylocalobj");
 	var mylocalobj = JSON.parse(myobjet_json);
 

@@ -91,7 +91,7 @@ function clickOnBoard2(event, sock) {
     sock.send(td.substring(1));
 }
 
-$(document).ready(function () {
+$(function () {
     var myobjet_json = localStorage.getItem("mylocalobj");
 	var mylocalobj = JSON.parse(myobjet_json);
 
