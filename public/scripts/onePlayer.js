@@ -214,6 +214,7 @@ $(document).ready(function () {
         fleetLen[0] += shipAreas[0][ind][0];
         fleetLen[1] += shipAreas[1][ind][0];
     }
+    myFleet = mylocalobj.myfleet;
     buildTheFleetAtRandom(computerFleet);
 
     createGrid("1"); initGrid2("1", mylocalobj.myfleet);

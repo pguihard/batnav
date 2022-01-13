@@ -11,7 +11,7 @@ var msg22 = "> Coulé. ";
 var msg3 = "Vous avez perdu!";
 var msg4 = "Vous avez gagné!";
 
-var shipId = 0; // 1-5
+//var shipId = 0; // 1-5
 
 var colorMissed = "#73B1B7";
 var colorReached = "#e78b8b";

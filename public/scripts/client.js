@@ -99,6 +99,7 @@ $(document).ready(function () {
         fleetLen[0] += shipAreas[0][ind][0];
     }
     shotsNum = fleetLen[0];
+    myFleet = mylocalobj.myfleet;
     createGrid("1"); initGrid2("1", mylocalobj.myfleet);
     createGrid("2"); initGrid("2");
     var sock = io();
