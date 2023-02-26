@@ -12,6 +12,7 @@ $(function() {
 		}
 		var myobjet_json = JSON.stringify(mylocalobj);
 		localStorage.setItem("mylocalobj",myobjet_json);
+		console.log("DEBUG - index.js 15 - localStorage.setItem, myobjet_json: " + myobjet_json);
 		
 		if (buildTheFleet.checked) {
 		    window.location.replace("pages/buildTheFleet.html");
@@ -23,5 +24,6 @@ $(function() {
 
 		myobjet_json = JSON.stringify(mylocalobj);
 		localStorage.setItem("mylocalobj",myobjet_json);
+		console.log("DEBUG - index.js 27 - localStorage.setItem, myobjet_json: " + myobjet_json);
 	});
 });
