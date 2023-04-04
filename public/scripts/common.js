@@ -168,6 +168,8 @@ function getTheShot(coord, theFleet, boardn, sock){
         if (fleetLen[boardn-1] == 0) {
             ++nShots[0];
             $("#alert").text(msg3 + " Nombre de tirs subis: " + nShots[0]);
+            //display the what you missed
+            // to do
         }
 
         if (boardn == 2 && fleetLen[boardn-1] == 0) {   //called by onePlayer only

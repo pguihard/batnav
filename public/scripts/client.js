@@ -6,15 +6,15 @@ function getTheResponse(msg) {
     var coord = msg.substring(1);
     var id = 0;
     switch (msg.substring(0,1)) {
-        case "M":
+        case "M":   //Missed
             document.getElementById("2" + coord).style.backgroundColor = colorMissed;
             $("#alert").text(msg20 + msg2);
             break;
-        case "R":
+        case "R":   //Reached
             document.getElementById("2" + coord).style.backgroundColor = colorReached;
             $("#alert").text(msg21 + msg2);
             break;
-        case "S":
+        case "S":   //Sunk
             id = parseInt(msg.substring(1,2));
             coord = msg.substring(2);
             document.getElementById("2" + coord).style.backgroundColor = colorsSunk[id];
@@ -23,7 +23,7 @@ function getTheResponse(msg) {
             break;
     }
     if (shotsNum == 0) { //You have won
-        $("#alert").text(msg4 + " Nombre de tirs subis: " + nShots[0]);
+        $("#alert").text(msg4 + " >>> Nombre de tirs subis: " + nShots[0]);
     }
 }
 
