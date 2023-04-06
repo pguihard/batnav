@@ -22,7 +22,7 @@ function getTheResponse(msg) {
             shotsNum--;
             break;
     }
-    if (shotsNum == 0) { //You have won
+    if (shotsNum == 0) { //*** WON (two players)
         $("#alert").text(msg4 + " >>> Nombre de tirs subis: " + nShots[0]);
     }
 }

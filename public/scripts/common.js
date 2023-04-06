@@ -165,14 +165,14 @@ function getTheShot(coord, theFleet, boardn, sock){
     }
     else if (theFleet[row][col] < 9) { //test if shot against a valid part of ship
         fleetLen[boardn-1]--;
-        if (fleetLen[boardn-1] == 0) {
+        if (fleetLen[boardn-1] == 0) {  // *** LOST
             ++nShots[0];
             $("#alert").text(msg3 + " Nombre de tirs subis: " + nShots[0]);
-            //display the what you missed
-            // to do
+            //display what you missed
+            //to do
         }
 
-        if (boardn == 2 && fleetLen[boardn-1] == 0) {   //called by onePlayer only
+        if (boardn == 2 && fleetLen[boardn-1] == 0) {   //called when one player only, *** WON
             ++nShots[1];
             $("#alert").text(msg4 + " Nombre de vos tirs: " + nShots[1]);
         }
